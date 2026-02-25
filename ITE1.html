@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Scholarship Quiz (with localStorage)</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f7f9fc; }
+        h1 { text-align: center; }
+        .status-bar { background: #e2e6ea; padding: 10px 15px; border-radius: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 0.95rem; border: 1px solid #c0c6cc; }
+        .status-bar button { padding: 4px 12px; font-size: 0.8rem; background: #6c757d; }
+        .status-bar button:hover { background: #5a6268; }
+        .question { background: white; padding: 20px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .options { list-style: none; padding: 0; }
+        .option { padding: 12px; margin: 8px 0; background: #eef; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .option:hover { background: #ddf; }
+        .option.correct { background: #d4edda; border: 2px solid #28a745; }
+        .option.incorrect { background: #f8d7da; border: 2px solid #dc3545; }
+        .feedback { margin-top: 15px; font-weight: bold; }
+        #result { margin-top: 30px; font-size: 1.4em; text-align: center; font-weight: bold; }
+        button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .reset-small { background: #dc3545; margin-left: 10px; }
+        .reset-small:hover { background: #c82333; }
+    </style>
+</head>
+<body>
+    <h1>Full Stack Development Scholarship Quiz</h1>
+    
+    <!-- status bar with localStorage info -->
+    <div class="status-bar" id="storageStatus">
+        <span id="progressMessage">Loading saved progress...</span>
+        <button id="clearStorageBtn" class="reset-small" title="Clear saved progress and restart">🗑️ clear save</button>
+    </div>
+
+    <div id="quiz"></div>
+    <div id="result"></div>
+    <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+        <button onclick="restartQuiz()">↻ Restart from beginning</button>
+        <button onclick="hardReset()" style="background:#dc3545;">⟲ Full reset & clear storage</button>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- question bank (unchanged, exactly as provided) ----------
+            const questions = [
+                // Java Basic
+                { question: "What is the correct syntax to output \"Hello World\" in Java?", options: ["echo \"Hello World\";", "System.out.println(\"Hello World\");", "print(\"Hello World\");", "Console.write(\"Hello World\");"], correct: 1, explain: "System.out.println() is the standard way to print in Java." },
+                { question: "Which of the following is a valid variable declaration in Java?", options: ["int 1num = 5;", "int num = 5;", "int num- = 5;", "int num@ = 5;"], correct: 1, explain: "Variable names must start with a letter, underscore, or dollar sign." },
+                { question: "What is the default value of a boolean variable in Java?", options: ["true", "false", "0", "null"], correct: 1, explain: "Instance and local boolean variables default to false (local must be initialized)." },
+                // Add more Java questions here (you can copy from the previous list)
+                { question: "Which keyword is used to define a constant in Java?", options: ["const", "final", "static", "var"], correct: 1, explain: "'final' makes a variable immutable." },
+                { question: "What does JVM stand for?", options: ["Java Visual Model", "Java Virtual Machine", "Java Variable Manager", "Java Version Manager"], correct: 1, explain: "JVM executes Java bytecode." },
+
+                // Java Intermediate & Advanced (sample)
+                { question: "What is encapsulation in Java?", options: ["Inheriting properties", "Hiding internal details", "Multiple methods same name", "Multiple interfaces"], correct: 1, explain: "Encapsulation bundles data and methods, hiding implementation." },
+                { question: "Difference between == and .equals()?", options: ["They are the same", "== checks reference, .equals() checks value", "== checks value", ".equals() for primitives"], correct: 1, explain: "== compares references; .equals() compares content (overridden in many classes)." },
+                { question: "What is the purpose of the volatile keyword?", options: ["Makes variable constant", "Ensures visibility across threads", "Allows multiple inheritance", "Handles GC"], correct: 1, explain: "volatile ensures changes are visible to all threads." },
+
+                // HTML/CSS
+                { question: "What does HTML stand for?", options: ["High Text Markup Language", "Hyper Text Markup Language", "Hyper Transfer Markup Language", "None"], correct: 1, explain: "Hyper Text Markup Language." },
+                { question: "How do you select an element with id \"demo\" in CSS?", options: [".demo", "#demo", "demo", "*demo"], correct: 1, explain: "ID selector uses #." },
+
+                // JavaScript
+                { question: "What is a closure in JavaScript?", options: ["A loop", "Function with access to outer scope", "Object method", "Variable type"], correct: 1, explain: "Closures allow inner functions to access outer variables." },
+                { question: "What is the purpose of async/await?", options: ["Create loops", "Handle async operations synchronously", "Define classes", "Manipulate arrays"], correct: 1, explain: "Makes asynchronous code look synchronous." },
+
+                // SQL
+                { question: "Which SQL keyword retrieves data?", options: ["GET", "SELECT", "RETRIEVE", "FETCH"], correct: 1, explain: "SELECT is used to query data." },
+                { question: "Difference between INNER JOIN and LEFT JOIN?", options: ["Same", "INNER: matching rows, LEFT: all from left", "LEFT is faster", "INNER allows nulls"], correct: 1, explain: "LEFT JOIN includes all rows from the left table." },
+
+                // English (based on institute description)
+                { question: "What is the main focus of the institute's basic course?", options: ["Graphic Design", "Full Stack Development", "Marketing", "Accounting"], correct: 1, explain: "The basic course is Full Stack Development." },
+                { question: "Which advanced course focuses on mobile apps?", options: ["Spring Advanced", "Data Analytics", "DevOps", "iOS Development"], correct: 3, explain: "iOS Development teaches mobile app creation for Apple devices." }
+            ];
+
+            // ---------- localStorage key ----------
+            const STORAGE_KEY = 'fullstackQuiz';
+
+            // ---------- global state ----------
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            // ---------- helper: load saved progress ----------
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion+1}/${questions.length} (score ${score})`);
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                // fresh start defaults
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New session – progress will be saved');
+            }
+
+            // ---------- save to localStorage (debounced) ----------
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion+1}/${questions.length} · score ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            // ---------- update status bar text ----------
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            // ---------- clear storage & reset ----------
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage cleared – starting fresh');
+                displayQuestion();
+            }
+
+            // ---------- soft restart (beginning, keep storage overwritten) ----------
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();   // save fresh state
+                displayQuestion();
+            }
+
+            // ---------- render current question ----------
+            function displayQuestion() {
+                // if quiz finished
+                if (currentQuestion >= questions.length) {
+                    document.getElementById("quiz").innerHTML = "";
+                    document.getElementById("result").innerHTML = `Quiz Complete! Your score: ${score} / ${questions.length} (${Math.round(score/questions.length*100)}%)`;
+                    saveProgress();  // final state saved
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                quizDiv.innerHTML = `
+                    <div class="question">
+                        <h3>Question ${currentQuestion + 1} of ${questions.length}</h3>
+                        <p>${q.question}</p>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+                updateStatusMessage(`📌 Q${currentQuestion+1}/${questions.length} · score ${score}`);
+            }
+
+            // ---------- global checkAnswer (called from onclick) ----------
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return; // already answered
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null; // disable further clicks
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                if (selected === correct) {
+                    feedback.innerHTML = `<span style="color:green;">✓ Correct!</span> ${q.explain}`;
+                    score++;
+                } else {
+                    feedback.innerHTML = `<span style="color:red;">✗ Incorrect.</span> Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                }
+
+                // move to next after delay and save
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();   // persist new index and score
+                    displayQuestion();
+                }, 3000);
+            };
+
+            // ---------- expose functions to global for buttons ----------
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+
+            // ---------- load saved progress & start ----------
+            loadProgress();
+            displayQuestion();
+
+            // ---------- attach clear button listener ----------
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and restart from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })(); // end IIFE
+    </script>
+</body>
+</html>

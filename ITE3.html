@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100-Question Full Stack Scholarship Quiz</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --bg: #f0f4f8;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: var(--bg); color: #333; }
+        h1 { text-align: center; color: #222; margin-bottom: 10px; }
+        
+        /* Progress Bar Styles */
+        .progress-container { width: 100%; background: #ddd; height: 10px; border-radius: 5px; margin: 20px 0; overflow: hidden; }
+        #progress-bar { width: 0%; height: 100%; background: var(--success); transition: width 0.3s ease; }
+
+        .question { background: white; padding: 25px; margin: 20px 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .options { list-style: none; padding: 0; }
+        .option { padding: 14px; margin: 10px 0; background: #e9f0ff; border-radius: 8px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .option:hover { background: #d0e0ff; border-color: var(--primary); }
+        .option.correct { background: #d4edda; border-color: var(--success); font-weight: bold; }
+        .option.incorrect { background: #f8d7da; border-color: var(--danger); }
+        
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: 500; background: #f8f9fa; border-left: 5px solid #ccc; }
+        #result { margin-top: 40px; padding: 30px; font-size: 1.5em; text-align: center; font-weight: bold; background: var(--primary); color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,123,255,0.3); }
+        
+        .controls { text-align: center; margin-top: 30px; }
+        button { padding: 12px 30px; font-size: 16px; color: white; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
+        button:hover { opacity: 0.9; }
+        .btn-restart { background: var(--danger); }
+    </style>
+</head>
+<body>
+
+    <h1>Full Stack Development Quiz</h1>
+    
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div id="quiz"></div>
+    <div id="result"></div>
+
+    <div class="controls">
+        <button class="btn-restart" onclick="restartQuiz()">Reset Progress & Restart</button>
+    </div>
+
+    <script>
+        const questions = [
+            // ==================== Java Programming (40 questions) ====================
+            { q: "What is the correct way to print 'Hello World' in Java?", o: ["echo 'Hello World'", "System.out.println('Hello World')", "print('Hello World')", "Console.WriteLine('Hello World')"], c: 1, e: "System.out.println() is the standard output method in Java." },
+            { q: "Which is a valid variable name in Java?", o: ["1variable", "my-variable", "my_variable", "my variable"], c: 2, e: "Variable names can contain underscores but not hyphens or spaces, and cannot start with a number." },
+            { q: "Default value of boolean in Java?", o: ["true", "false", "0", "null"], c: 1, e: "Boolean fields are false by default; local variables must be initialized." },
+            { q: "Keyword for constant in Java?", o: ["const", "final", "static", "immutable"], c: 1, e: "'final' prevents reassignment." },
+            { q: "JVM stands for?", o: ["Java Visual Machine", "Java Virtual Machine", "Java Variable Manager", "Java Version Model"], c: 1, e: "JVM executes Java bytecode." },
+            { q: "Which is not a primitive type?", o: ["int", "String", "char", "double"], c: 1, e: "String is a reference type (class)." },
+            { q: "Correct array declaration?", o: ["int arr = new int[5]", "int[] arr = new int[5]", "array int[5] arr", "int arr[] = int[5]"], c: 1, e: "Both [] before or after name are valid, but 'new int[5]' is required." },
+            { q: "Output of 10 + 20 + '30' ?", o: ["60", "3030", "102030", "Error"], c: 1, e: "Numeric addition first, then string concatenation." },
+            { q: "Loop guaranteed to run at least once?", o: ["for", "while", "do-while", "enhanced for"], c: 2, e: "do-while checks condition after execution." },
+            { q: "Purpose of 'break'?", o: ["Skip iteration", "Exit loop/switch", "Continue loop", "Throw exception"], c: 1, e: "break exits the nearest loop or switch." },
+            { q: "Encapsulation means?", o: ["Inheritance", "Hiding data & exposing methods", "Polymorphism", "Abstraction"], c: 1, e: "Bundling data and methods, restricting direct access." },
+            { q: "Access modifier for visible everywhere?", o: ["private", "protected", "public", "default"], c: 2, e: "public allows access from any class." },
+            { q: "'super' keyword is used to?", o: ["Refer current object", "Call parent constructor/method", "Create object", "Access static"], c: 1, e: "super calls superclass members." },
+            { q: "Collection allowing duplicates?", o: ["Set", "List", "Map", "Queue"], c: 1, e: "List permits duplicate elements." },
+            { q: "== vs .equals()?", o: ["Same", "== reference, .equals() value", "== value, .equals() reference", ".equals() only primitives"], c: 1, e: "== checks memory address; .equals() checks content (often overridden)." },
+            { q: "Exception handling uses?", o: ["if-else", "try-catch", "switch", "loops"], c: 1, e: "try-catch-finally handles exceptions." },
+            { q: "Lambda expression is?", o: ["Anonymous class", "Concise function", "Loop", "Interface"], c: 1, e: "Lambdas implement functional interfaces concisely." },
+            { q: "Interface for custom sorting?", o: ["Comparator", "Comparable", "Serializable", "Cloneable"], c: 0, e: "Comparable defines natural order via compareTo()." },
+            { q: "Multithreading means?", o: ["Multiple classes", "Concurrent threads", "Multiple inheritance", "Multiple exceptions"], c: 1, e: "Executing multiple threads simultaneously." },
+            { q: "Synchronize method with keyword?", o: ["lock", "synchronized", "threadsafe", "atomic"], c: 1, e: "synchronized prevents concurrent access." },
+            { q: "volatile keyword ensures?", o: ["Immutability", "Thread visibility", "Atomicity", "Serialization"], c: 1, e: "Changes visible to all threads immediately." },
+            { q: "HashMap vs Hashtable?", o: ["Same", "HashMap not synchronized, allows null", "Hashtable allows null", "Both synchronized"], c: 1, e: "Hashtable is synchronized and disallows null keys/values." },
+            { q: "Functional interface has?", o: ["No methods", "One abstract method", "Multiple methods", "Static only"], c: 1, e: "Exactly one abstract method (can have default/static)." },
+            { q: "Garbage collection does?", o: ["Manual delete", "Auto reclaim unused objects", "Only primitives", "Programmer control"], c: 1, e: "JVM automatically frees unreachable objects." },
+            { q: "Diamond problem relates to?", o: ["Generics", "Multiple inheritance via interfaces", "Deadlock", "Exception"], c: 1, e: "Ambiguity in default methods from multiple interfaces." },
+            { q: "Stream API is for?", o: ["File I/O", "Functional-style collection processing", "Networking", "Database"], c: 1, e: "Streams enable pipeline operations like filter, map, reduce." },
+            { q: "Reflection allows?", o: ["Runtime class inspection/modification", "Graphics", "Exception handling", "Compilation"], c: 0, e: "Access metadata, invoke methods dynamically." },
+            { q: "Fail-fast vs fail-safe iterator?", o: ["Same", "Fail-fast throws on modification, fail-safe doesn't", "Fail-safe faster", "Only lists"], c: 1, e: "Fail-fast (e.g., ArrayList) throws ConcurrentModificationException." },
+            { q: "@Override annotation?", o: ["Makes method static", "Indicates overriding", "Handles exceptions", "Creates method"], c: 1, e: "Ensures method correctly overrides superclass method." },
+            { q: "Custom serialization?", o: ["Implement Externalizable", "Implement Serializable only", "Override writeObject/readObject", "Use transient"], c: 0, e: "writeObject/readObject give fine control." },
+            { q: "Abstract class can have?", o: ["Only abstract methods", "Constructor & concrete methods", "No constructor", "Multiple inheritance"], c: 1, e: "Abstract classes can have state and behavior." },
+            { q: "final class can be?", o: ["Inherited", "Extended", "Not extended", "Abstract"], c: 2, e: "final classes cannot be subclassed." },
+            { q: "String pool is in?", o: ["Stack", "Heap", "Method area", "PC register"], c: 2, e: "String literals are interned in heap pool." },
+            { q: "try-with-resources ensures?", o: ["No finally needed", "Auto close resources", "Manual close", "Exception ignore"], c: 1, e: "Resources implementing AutoCloseable are closed automatically." },
+            { q: "Generics provide?", o: ["Runtime type check", "Compile-time type safety", "Dynamic casting", "Multiple inheritance"], c: 1, e: "Prevent ClassCastException at compile time." },
+            { q: "Checked vs unchecked exceptions?", o: ["Both same", "Checked must be handled/declared", "Unchecked are Error", "No difference"], c: 1, e: "Checked (e.g., IOException) force handling." },
+            { q: "ExecutorService is for?", o: ["Thread creation", "Managing thread pool", "Synchronization", "Locking"], c: 1, e: "Abstracts thread management." },
+            { q: "Optional class prevents?", o: ["NullPointerException", "Index errors", "Memory leaks", "Deadlocks"], c: 0, e: "Encourages null-safe code." },
+            { q: "Module system introduced in?", o: ["Java 7", "Java 8", "Java 9", "Java 11"], c: 2, e: "Java 9 introduced JPMS (Java Platform Module System)." },
+            { q: "var keyword (Java 10+) is?", o: ["Dynamic typing", "Local variable type inference", "Global", "For arrays only"], c: 1, e: "Compiler infers type from assignment." },
+
+            // ==================== HTML & CSS (20 questions) ====================
+            { q: "HTML stands for?", o: ["Hyper Text Markup Language", "High Text Markup Language", "Hyper Transfer Markup Language", "Home Tool Markup Language"], c: 0, e: "Hyper Text Markup Language." },
+            { q: "Tag for hyperlink?", o: ["<link>", "<a>", "<href>", "<url>"], c: 1, e: "<a href='...'> is the anchor tag." },
+            { q: "Largest heading tag?", o: ["<h6>", "<h1>", "<head>", "<header>"], c: 1, e: "<h1> is the highest level heading." },
+            { q: "CSS stands for?", o: ["Creative Style Sheets", "Cascading Style Sheets", "Computer Style Sheets", "Colorful Style Sheets"], c: 1, e: "Cascading Style Sheets." },
+            { q: "Inline vs block elements?", o: ["Inline takes full width", "Block starts new line", "Same", "Inline cannot have width"], c: 1, e: "Block elements (div, p) take full width and start on new line." },
+            { q: "ID selector in CSS?", o: [".demo", "#demo", "demo", "*demo"], c: 1, e: "# is for IDs, . for classes." },
+            { q: "Alt attribute is for?", o: ["Title", "Image description", "Source", "Link"], c: 1, e: "Provides alternative text for accessibility." },
+            { q: "Flexbox is?", o: ["Grid system", "One-dimensional layout", "Animation", "Color model"], c: 1, e: "Great for aligning items in a row or column." },
+            { q: "Responsive image CSS?", o: ["width: 100%", "max-width: 100%; height: auto", "fixed width", "position: absolute"], c: 1, e: "Scales image without distortion." },
+            { q: "<meta> tag purpose?", o: ["Link CSS", "Provide document metadata", "Embed JS", "Create form"], c: 1, e: "Used for charset, viewport, description, etc." },
+            { q: "Box model includes?", o: ["Margin only", "Content + padding + border + margin", "Just content", "Padding + border"], c: 1, e: "Full box model affects layout size." },
+            { q: "Position: absolute?", o: ["Relative to parent", "Out of flow, relative to nearest positioned ancestor", "Static", "Fixed to viewport"], c: 1, e: "Removes element from normal flow." },
+            { q: "Pseudo-class for hover?", o: [":active", ":hover", ":focus", ":visited"], c: 1, e: ":hover triggers on mouse over." },
+            { q: "Media query for responsive?", o: ["@media", "@screen", "@responsive", "@query"], c: 0, e: "@media (max-width: ...) applies styles conditionally." },
+            { q: "Semantic tag example?", o: ["<div>", "<span>", "<article>", "<br>"], c: 2, e: "<article>, <section>, <nav> convey meaning." },
+            { q: "CSS specificity order?", o: ["Class > ID > Inline", "Inline > ID > Class > Element", "Element > Class > ID", "ID > Inline > Class"], c: 1, e: "Inline highest, then ID, class, element." },
+            { q: "z-index controls?", o: ["Opacity", "Stacking order", "Width", "Font"], c: 1, e: "Higher z-index appears on top." },
+            { q: "Transition property?", o: ["Changes instantly", "Smooth change over time", "Animation loop", "Keyframe"], c: 1, e: "transition: property duration timing;" },
+            { q: "Grid vs Flexbox?", o: ["Same", "Grid two-dimensional, Flex one-dimensional", "Flex for 2D", "Grid only rows"], c: 1, e: "Grid excels at full layouts." },
+            { q: "HTML5 doctype?", o: ["<!DOCTYPE HTML5>", "<!DOCTYPE html>", "<!DOCTYPE HTML PUBLIC>", "<doctype html>"], c: 1, e: "Simple and triggers standards mode." },
+
+            // ==================== JavaScript (20 questions) ====================
+            { q: "JavaScript is primarily used for?", o: ["Styling", "Structure", "Interactivity", "Server"], c: 2, e: "Adding behavior to web pages." },
+            { q: "Variable declaration keywords?", o: ["int", "var, let, const", "variable", "dim"], c: 1, e: "var (function), let (block), const (immutable)." },
+            { q: "typeof null returns?", o: ["'null'", "'object'", "'undefined'", "'string'"], c: 1, e: "Historical bug, returns 'object'." },
+            { q: "Strict equality operator?", o: ["==", "===", "!==", "="], c: 1, e: "=== checks value and type." },
+            { q: "Closure is?", o: ["Loop", "Function remembering outer scope", "Object", "Array method"], c: 1, e: "Inner function accesses outer variables." },
+            { q: "Add event listener?", o: ["element.onclick = fn", "element.addEventListener('click', fn)", "on('click')", "attachEvent"], c: 1, e: "Modern, allows multiple listeners." },
+            { q: "DOM stands for?", o: ["Document Object Model", "Data Object Model", "Display Object Manager", "Document Oriented Model"], c: 0, e: "Tree representation of HTML." },
+            { q: "async/await is for?", o: ["Loops", "Synchronous async code", "Classes", "Arrays"], c: 1, e: "Cleaner promise handling." },
+            { q: "Hoisting means?", o: ["Variables at top", "Declarations moved to top", "Functions executed", "Objects cloned"], c: 1, e: "var/function declarations hoisted." },
+            { q: "Promise represents?", o: ["Sync operation", "Eventual completion/failure", "Loop", "Error"], c: 1, e: "Async operation result." },
+            { q: "this keyword refers to?", o: ["Global object", "Depends on context", "Parent function", "Window always"], c: 1, e: "Context: global, object, function, etc." },
+            { q: "Array method to add end?", o: ["push()", "pop()", "shift()", "unshift()"], c: 0, e: "push adds to end." },
+            { q: "Spread operator ... does?", o: ["Copy array/object", "Multiply", "Concat only", "Delete"], c: 0, e: "Expands iterables." },
+            { q: "Destructuring example?", o: ["let {a, b} = obj", "let a = obj.a", "Both same", "let a:b = obj"], c: 0, e: "Extract values concisely." },
+            { q: "Map vs Object?", o: ["Same", "Map keys any type, ordered", "Object better", "Map no keys"], c: 1, e: "Map maintains insertion order." },
+            { q: "Arrow function this?", o: ["Dynamic", "Lexical (inherits from enclosing)", "Global", "Undefined"], c: 1, e: "Does not bind own this." },
+            { q: "Module export default?", o: ["module.exports", "export default", "exports.default", "module.default"], c: 1, e: "ES6 modules syntax." },
+            { q: "Event propagation phases?", o: ["Capturing, bubbling", "Only bubbling", "Only capturing", "None"], c: 0, e: "Capture top-down, bubble bottom-up." },
+            { q: "LocalStorage vs SessionStorage?", o: ["Same", "Local persists, session per tab", "Both session", "Local per tab"], c: 1, e: "LocalStorage survives browser close." },
+            { q: "Debounce vs throttle?", o: ["Same", "Debounce delays, throttle limits rate", "Throttle delays", "Both delay"], c: 1, e: "Useful for performance (e.g., scroll, resize)." },
+
+            // ==================== SQL (20 questions) ====================
+            { q: "SQL stands for?", o: ["Standard Query Language", "Structured Query Language", "Simple Query Language", "Sequential Query Language"], c: 1, e: "Structured Query Language." },
+            { q: "Retrieve data keyword?", o: ["GET", "SELECT", "FETCH", "QUERY"], c: 1, e: "SELECT * FROM table;" },
+            { q: "Filter records?", o: ["FILTER", "WHERE", "HAVING", "GROUP"], c: 1, e: "WHERE applies before grouping." },
+            { q: "Unique identifier column?", o: ["Foreign key", "Primary key", "Index", "Candidate key"], c: 1, e: "Uniquely identifies each row." },
+            { q: "Join tables?", o: ["UNION", "JOIN", "MERGE", "COMBINE"], c: 1, e: "INNER, LEFT, RIGHT, FULL JOIN." },
+            { q: "GROUP BY does?", o: ["Sort", "Group same values", "Filter", "Join"], c: 1, e: "Aggregates rows with same values." },
+            { q: "HAVING vs WHERE?", o: ["Same", "HAVING after GROUP BY", "WHERE after GROUP", "No difference"], c: 1, e: "HAVING filters groups." },
+            { q: "Subquery is?", o: ["Join", "Nested query", "Index", "View"], c: 1, e: "Query within another query." },
+            { q: "INNER vs LEFT JOIN?", o: ["Same", "INNER matching, LEFT all left + matching right", "LEFT only left", "INNER all"], c: 1, e: "LEFT includes non-matching left rows." },
+            { q: "Normalization reduces?", o: ["Speed", "Redundancy", "Size", "Indexes"], c: 1, e: "Minimizes data duplication and anomalies." },
+            { q: "Auto-increment column?", o: ["IDENTITY", "AUTO_INCREMENT", "SEQUENCE", "All above"], c: 3, e: "Syntax varies by DBMS." },
+            { q: "COUNT(*) vs COUNT(column)?", o: ["Same", "COUNT(*) all rows, COUNT(col) non-null", "Both non-null", "COUNT(*) faster"], c: 1, e: "COUNT(column) skips NULLs." },
+            { q: "Transaction property ACID?", o: ["Speed", "Atomicity, Consistency, Isolation, Durability", "Only Atomic", "None"], c: 1, e: "Guarantees reliable transactions." },
+            { q: "Index improves?", o: ["Insert speed", "Retrieval speed", "Storage", "Backup"], c: 1, e: "Faster SELECT, slower INSERT/UPDATE." },
+            { q: "UNION vs UNION ALL?", o: ["Same", "UNION removes duplicates", "UNION ALL faster", "Both remove"], c: 1, e: "UNION ALL keeps duplicates." },
+            { q: "LIKE operator for?", o: ["Exact match", "Pattern matching", "Math", "Date"], c: 1, e: "Uses % and _ wildcards." },
+            { q: "ORDER BY ASC/DESC?", o: ["Default DESC", "Default ASC", "No default", "Random"], c: 1, e: "ASC is default if not specified." },
+            { q: "View is?", o: ["Physical table", "Virtual table from query", "Index", "Trigger"], c: 1, e: "Stored query, no data storage." },
+            { q: "Foreign key enforces?", o: ["Uniqueness", "Referential integrity", "Speed", "Indexing"], c: 1, e: "Links to primary key in another table." },
+            { q: "TRUNCATE vs DELETE?", o: ["Same", "TRUNCATE faster, no WHERE", "DELETE faster", "Both same speed"], c: 1, e: "TRUNCATE resets identity, cannot rollback in some DBMS." }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let current = parseInt(localStorage.getItem('quiz_current')) || 0;
+        let score = parseInt(localStorage.getItem('quiz_score')) || 0;
+
+        function updateProgressBar() {
+            const progress = (current / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+
+        function showQuestion() {
+            const quizDiv = document.getElementById("quiz");
+            const resultDiv = document.getElementById("result");
+            
+            updateProgressBar();
+
+            if (current >= questions.length) {
+                quizDiv.innerHTML = "";
+                resultDiv.innerHTML = `
+                    <h2>Quiz Completed!</h2>
+                    <p>Final Score: ${score} / ${questions.length}</p>
+                    <p>Percentage: ${Math.round(score/questions.length*100)}%</p>
+                `;
+                // Clear storage so the user can restart next time they visit
+                localStorage.removeItem('quiz_current');
+                localStorage.removeItem('quiz_score');
+                return;
+            }
+
+            const q = questions[current];
+            quizDiv.innerHTML = `
+                <div class="question">
+                    <h3>Question ${current + 1} of ${questions.length}</h3>
+                    <p><strong>${q.q}</strong></p>
+                    <ul class="options">
+                        ${q.o.map((opt, i) => `
+                            <li class="option" onclick="handleSelection(${i}, ${q.c})">
+                                ${String.fromCharCode(65 + i)}. ${opt}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div class="feedback" id="fb">Select an answer...</div>
+                </div>
+            `;
+        }
+
+        function handleSelection(chosenIndex, correctIndex) {
+            const options = document.querySelectorAll(".option");
+            const feedbackBox = document.getElementById("fb");
+            
+            // Disable all options after click
+            options.forEach((opt, idx) => {
+                opt.onclick = null;
+                if (idx === correctIndex) opt.classList.add("correct");
+                if (idx === chosenIndex && idx !== correctIndex) opt.classList.add("incorrect");
+            });
+
+            if (chosenIndex === correctIndex) {
+                score++;
+                feedbackBox.innerHTML = `<span style="color:var(--success)">✓ Correct!</span><br><small>${questions[current].e}</small>`;
+            } else {
+                feedbackBox.innerHTML = `<span style="color:var(--danger)">✗ Incorrect.</span> The correct answer was <b>${String.fromCharCode(65+correctIndex)}</b>.<br><small>${questions[current].e}</small>`;
+            }
+
+            // Save Progress
+            current++;
+            localStorage.setItem('quiz_current', current);
+            localStorage.setItem('quiz_score', score);
+
+            // Delay before next question
+            setTimeout(showQuestion, 2500);
+        }
+
+        function restartQuiz() {
+            if (confirm("Reset everything and start from Question 1?")) {
+                localStorage.removeItem('quiz_current');
+                localStorage.removeItem('quiz_score');
+                location.reload();
+            }
+        }
+
+        // Run on load
+        showQuestion();
+    </script>
+</body>
+</html>

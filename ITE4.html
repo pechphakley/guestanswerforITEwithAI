@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Awareness Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: #e8f0fe;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #1e3c72;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #1e3c72;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #1e3c72;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #1e3c72;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        #result p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e3c72;
+            border: 5px solid #ffc107;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2a5298;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-3px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            transition: width 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-container {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Cybersecurity Awareness Quiz</h1>
+        <p class="subtitle">Test your knowledge about online security and protection</p>
+        
+        <!-- Status Bar -->
+        <div class="status-bar" id="storageStatus">
+            <span id="progressMessage">Loading your progress...</span>
+            <button id="clearStorageBtn">🗑️ Clear Save</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div id="quiz"></div>
+        
+        <!-- Result Container -->
+        <div id="result" style="display: none;"></div>
+
+        <!-- Button Group -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+            <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Cybersecurity Questions
+            const questions = [
+                {
+                    question: "What is Cyber Security?",
+                    options: [
+                        "Cybersecurity provides security against malware.",
+                        "Cybersecurity provides security against cyber-terrorists",
+                        "Cybersecurity protects a system from cyber attacks.",
+                        "All of the mentioned"
+                    ],
+                    correct: 3,
+                    explain: "Cybersecurity encompasses all measures to protect systems, networks, and data from various cyber threats including malware, cyber-terrorists, and cyber attacks."
+                },
+                {
+                    question: "Which of the following is NOT a type of malware?",
+                    options: [
+                        "Ransomware",
+                        "Spyware",
+                        "Firewall",
+                        "Trojan horse"
+                    ],
+                    correct: 2,
+                    explain: "A firewall is a security device (hardware or software) that monitors and controls network traffic. Ransomware, spyware, and Trojan horses are all types of malware."
+                },
+                {
+                    question: "The full form of Malware is",
+                    options: [
+                        "Malfunctioned Software",
+                        "Multipurpose Software",
+                        "Malicious Software",
+                        "Malfunctioning of Security"
+                    ],
+                    correct: 2,
+                    explain: "Malware is short for 'Malicious Software' - any software intentionally designed to cause damage to a computer, server, or network."
+                },
+                {
+                    question: "Which of the following is an example of a strong password?",
+                    options: [
+                        "password123",
+                        "MyName202",
+                        "12345678",
+                        "T7$mK9#pL2@qR5"
+                    ],
+                    correct: 3,
+                    explain: "A strong password should include a mix of uppercase and lowercase letters, numbers, and special characters. 'T7$mK9#pL2@qR5' meets all these criteria."
+                },
+                {
+                    question: "What is social engineering in cybersecurity?",
+                    options: [
+                        "Building secure networks",
+                        "Manipulating people into revealing confidential information",
+                        "Engineering software applications",
+                        "Creating social media accounts"
+                    ],
+                    correct: 1,
+                    explain: "Social engineering is the psychological manipulation of people into performing actions or divulging confidential information, rather than technical hacking."
+                },
+                {
+                    question: "What is phishing?",
+                    options: [
+                        "A type of firewall",
+                        "A social engineering attack that tricks users into revealing sensitive information",
+                        "A method of encrypting data",
+                        "A type of antivirus software"
+                    ],
+                    correct: 1,
+                    explain: "Phishing is a cyber attack that uses disguised email or messages to trick victims into revealing sensitive information like passwords or credit card numbers."
+                },
+                {
+                    question: "What does KYC stand for?",
+                    options: [
+                        "Know Your Customer",
+                        "Keep Your Cash",
+                        "Know Your Clientele",
+                        "Keep Your Credentials"
+                    ],
+                    correct: 0,
+                    explain: "KYC stands for 'Know Your Customer' - a process used by businesses to verify the identity of their clients and assess potential risks."
+                },
+                {
+                    question: "The main purpose of KYC is to",
+                    options: [
+                        "Increase customer satisfaction",
+                        "Prevent money laundering and fraud",
+                        "Improve marketing strategies",
+                        "Promote banking products"
+                    ],
+                    correct: 1,
+                    explain: "KYC procedures are primarily implemented to prevent money laundering, fraud, and other financial crimes by verifying customer identities."
+                },
+                {
+                    question: "What is encryption?",
+                    options: [
+                        "Deleting files permanently",
+                        "Converting data into a coded format to prevent unauthorized access",
+                        "Scanning for viruses",
+                        "Creating backup copies"
+                    ],
+                    correct: 1,
+                    explain: "Encryption is the process of converting data into a coded format (ciphertext) that can only be read by authorized parties with the decryption key."
+                },
+                {
+                    question: "What is two-factor authentication (2FA)?",
+                    options: [
+                        "Using two different passwords",
+                        "A security process that requires two different forms of identification",
+                        "Having two antivirus programs",
+                        "Logging in from two devices"
+                    ],
+                    correct: 1,
+                    explain: "2FA adds an extra layer of security by requiring two different authentication factors - typically something you know (password) and something you have (phone)."
+                },
+                {
+                    question: "What is a VPN (Virtual Private Network) used for?",
+                    options: [
+                        "To make your computer run faster",
+                        "To create a secure, encrypted connection over the internet",
+                        "To download files more quickly",
+                        "To delete viruses automatically"
+                    ],
+                    correct: 1,
+                    explain: "A VPN creates an encrypted tunnel between your device and the internet, protecting your data from eavesdropping and hiding your IP address."
+                }
+            ];
+
+            const STORAGE_KEY = 'cybersecurityQuiz';
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            // Load saved progress
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
+            }
+
+            // Save progress
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            // Update status bar
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            // Update progress bar
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            // Hard reset
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            // Restart quiz
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            // Display question
+            function displayQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
+                quizDiv.innerHTML = `
+                    <div class="question-container">
+                        <span class="question-number">Question ${currentQuestion + 1} of ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+
+                updateStatusMessage(`📌 Question ${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+            }
+
+            // Show results
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 Excellent! You're a Cybersecurity Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 Good job! You have solid cybersecurity knowledge!";
+                } else if (percentage >= 40) {
+                    message = "📚 Keep learning! You're on the right track!";
+                } else {
+                    message = "🛡️ Time to brush up on cybersecurity basics!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">Your Score: ${score} / ${questions.length}</p>
+                    <p>Correct Answers: ${score}</p>
+                    <p>Incorrect Answers: ${questions.length - score}</p>
+                `;
+
+                saveProgress();
+            }
+
+            // Check answer
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return;
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null;
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected && i !== correct) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                
+                if (selected === correct) {
+                    feedback.innerHTML = `✅ <strong>Correct!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
+                    score++;
+                } else {
+                    feedback.innerHTML = `❌ <strong>Incorrect.</strong><br>Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
+                }
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();
+                    updateProgressBar();
+                    displayQuestion();
+                }, 3500);
+            };
+
+            // Make functions global
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+
+            // Load progress and start
+            loadProgress();
+            displayQuestion();
+
+            // Clear storage button
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and start from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
