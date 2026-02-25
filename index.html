@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITE Course Navigation - Button Links</title>
+    <title>ITE Course Navigation - Same Tab</title>
     <style>
         * {
             margin: 0;
@@ -277,16 +277,7 @@
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        /* Hover info tooltip */
+        /* Tooltip */
         .course-btn {
             position: relative;
         }
@@ -369,7 +360,7 @@
             }
         }
 
-        /* Glow effect on hover */
+        /* Glow effects */
         .btn-tie1:hover {
             box-shadow: 0 0 30px rgba(102, 126, 234, 0.7);
         }
@@ -390,43 +381,43 @@
 <body>
     <div class="container">
         <h1>ITE Course Navigation</h1>
-        <p class="subtitle">Select a course to access learning materials</p>
+        <p class="subtitle">Click any button to open in the SAME tab</p>
 
-        <!-- Main Button Links -->
+        <!-- Main Button Links - NO target="_blank" = opens in same tab -->
         <div class="button-container">
-            <a href="ITE1.html" class="course-btn btn-tie1" target="_blank" data-tooltip="Introduction to IT">
+            <a href="ITE1.html" class="course-btn btn-tie1" data-tooltip="Introduction to IT">
                 <span class="btn-icon">1</span>
                 TIE1
             </a>
 
-            <a href="ITE2.html" class="course-btn btn-ite2" target="_blank" data-tooltip="Web Development">
+            <a href="ITE2.html" class="course-btn btn-ite2" data-tooltip="Web Development">
                 <span class="btn-icon">2</span>
                 ITE2
             </a>
 
-            <a href="ITE3.html" class="course-btn btn-ite3" target="_blank" data-tooltip="Advanced Programming">
+            <a href="ITE3.html" class="course-btn btn-ite3" data-tooltip="Advanced Programming">
                 <span class="btn-icon">3</span>
                 ITE3
             </a>
 
-            <a href="ITE4.html" class="course-btn btn-ite4" target="_blank" data-tooltip="Networking & Security">
+            <a href="ITE4.html" class="course-btn btn-ite4" data-tooltip="Networking & Security">
                 <span class="btn-icon">4</span>
                 ITE4
             </a>
         </div>
 
-        <!-- Quick Access Badges -->
+        <!-- Quick Access Badges - Also same tab (no target="_blank") -->
         <div class="quick-access">
-            <h3>Quick Access</h3>
+            <h3>Quick Access (Same Tab)</h3>
             <div class="quick-btn-container">
-                <a href="ITE1.html" class="quick-btn" target="_blank" style="border-color: #667eea; color: #667eea;">TIE1</a>
-                <a href="ITE2.html" class="quick-btn" target="_blank" style="border-color: #f093fb; color: #f093fb;">ITE2</a>
-                <a href="ITE3.html" class="quick-btn" target="_blank" style="border-color: #4facfe; color: #4facfe;">ITE3</a>
-                <a href="ITE4.html" class="quick-btn" target="_blank" style="border-color: #43e97b; color: #43e97b;">ITE4</a>
+                <a href="ITE1.html" class="quick-btn" style="border-color: #667eea; color: #667eea;">TIE1</a>
+                <a href="ITE2.html" class="quick-btn" style="border-color: #f093fb; color: #f093fb;">ITE2</a>
+                <a href="ITE3.html" class="quick-btn" style="border-color: #4facfe; color: #4facfe;">ITE3</a>
+                <a href="ITE4.html" class="quick-btn" style="border-color: #43e97b; color: #43e97b;">ITE4</a>
             </div>
         </div>
 
-        <!-- Footer -->
+        <!-- Footer Links - Also same tab -->
         <div class="footer">
             <p>© 2025 ITE Department. All rights reserved.</p>
             <div class="footer-links">
@@ -439,28 +430,21 @@
     </div>
 
     <script>
-        // Add click animation and tracking
-        document.querySelectorAll('.course-btn, .quick-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                // Add click ripple effect
-                const ripple = document.createElement('span');
-                ripple.style.position = 'absolute';
-                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
-                ripple.style.borderRadius = '50%';
-                ripple.style.transform = 'scale(0)';
-                ripple.style.animation = 'pulse 0.3s ease-out';
-                ripple.style.width = '100px';
-                ripple.style.height = '100px';
-                ripple.style.left = '50%';
-                ripple.style.top = '50%';
-                ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        // Visual feedback for same-tab navigation
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Don't prevent default - we want normal navigation
+                console.log(`Navigating to: ${this.getAttribute('href')} in the SAME tab`);
                 
-                // Optional: Track clicks in console
-                console.log(`Clicked: ${this.textContent.trim()} - Redirecting to course page`);
+                // Add click animation
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
             });
         });
 
-        // Add keyboard navigation
+        // Keyboard navigation (1-4 keys)
         document.addEventListener('keydown', function(e) {
             const key = e.key;
             const buttons = {
@@ -472,20 +456,10 @@
             
             if (buttons[key]) {
                 e.preventDefault();
-                document.querySelector(buttons[key]).click();
+                const link = document.querySelector(buttons[key]);
+                console.log(`Keyboard shortcut ${key} pressed - navigating to ${link.getAttribute('href')}`);
+                window.location.href = link.getAttribute('href'); // Explicit same-tab navigation
             }
-        });
-
-        // Add loading animation on click
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href') !== '#') {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
-                }
-            });
         });
     </script>
 </body>
