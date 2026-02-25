@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Awareness Quiz</title>
+    <title>🔐 Cybersecurity Awareness Quiz</title>
     <style>
         * {
             margin: 0;
@@ -25,6 +25,148 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 30px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .lock-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3.5em;
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.4);
+            animation: pulse 2s infinite;
+            border: 4px solid #ffc107;
+        }
+
+        .login-screen h2 {
+            color: #1e3c72;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .login-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input:focus {
+            border-color: #1e3c72;
+            box-shadow: 0 0 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.4);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 1.1em;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hint-text {
+            color: #6c757d;
+            margin-top: 25px;
+            font-size: 1em;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Quiz Screen Styles (initially hidden) */
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-header h1 {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
         }
 
         h1 {
@@ -263,6 +405,21 @@
             }
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
         .question-container {
             animation: fadeIn 0.5s ease forwards;
         }
@@ -270,36 +427,132 @@
 </head>
 <body>
     <div class="container">
-        <h1>🛡️ Cybersecurity Awareness Quiz</h1>
-        <p class="subtitle">Test your knowledge about online security and protection</p>
-        
-        <!-- Status Bar -->
-        <div class="status-bar" id="storageStatus">
-            <span id="progressMessage">Loading your progress...</span>
-            <button id="clearStorageBtn">🗑️ Clear Save</button>
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <div class="lock-icon">🔒</div>
+            <h2>Protected Quiz</h2>
+            <p>Enter the password to access the Cybersecurity Awareness Quiz</p>
+            
+            <div class="password-input-group">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
+                <button class="login-btn" onclick="checkPassword()">Access Quiz</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div class="hint-text">
+                    <strong>💡 Hint:</strong> The password is "cyber2024" (try it!)
+                </div>
+            </div>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-        </div>
+        <!-- Quiz Screen (initially hidden) -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1>🛡️ Cybersecurity Awareness Quiz</h1>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+            <p class="subtitle">Test your knowledge about online security and protection</p>
+            
+            <!-- Status Bar -->
+            <div class="status-bar" id="storageStatus">
+                <span id="progressMessage">Loading your progress...</span>
+                <button id="clearStorageBtn">🗑️ Clear Save</button>
+            </div>
 
-        <!-- Quiz Container -->
-        <div id="quiz"></div>
-        
-        <!-- Result Container -->
-        <div id="result" style="display: none;"></div>
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
 
-        <!-- Button Group -->
-        <div class="button-group">
-            <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
-            <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            <!-- Quiz Container -->
+            <div id="quiz"></div>
+            
+            <!-- Result Container -->
+            <div id="result" style="display: none;"></div>
+
+            <!-- Button Group -->
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+                <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            </div>
         </div>
     </div>
 
     <script>
         (function() {
-            // Cybersecurity Questions
+            // ==================== PASSWORD AUTHENTICATION ====================
+            // Set your password here - change this to whatever you want
+            const CORRECT_PASSWORD = "cyber2024";
+            
+            // Check if user is already authenticated in this session
+            let isAuthenticated = sessionStorage.getItem('cyberQuizAuthenticated') === 'true';
+
+            // DOM Elements
+            const loginScreen = document.getElementById('loginScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Check authentication on page load
+            if (isAuthenticated) {
+                showQuiz();
+            } else {
+                showLogin();
+            }
+
+            function showLogin() {
+                loginScreen.style.display = 'block';
+                quizScreen.style.display = 'none';
+            }
+
+            function showQuiz() {
+                loginScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                // Initialize quiz when showing
+                loadProgress();
+                displayQuestion();
+            }
+
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CORRECT_PASSWORD) {
+                    // Password correct - authenticate
+                    sessionStorage.setItem('cyberQuizAuthenticated', 'true');
+                    isAuthenticated = true;
+                    errorMessage.classList.remove('show');
+                    errorMessage.textContent = '';
+                    passwordInput.classList.remove('error');
+                    passwordInput.value = '';
+                    showQuiz();
+                } else {
+                    // Password wrong - show error
+                    passwordInput.classList.add('error');
+                    errorMessage.textContent = '❌ Incorrect password! Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    
+                    // Shake animation is handled by CSS class
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 500);
+                }
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            }
+
+            function logout() {
+                sessionStorage.removeItem('cyberQuizAuthenticated');
+                isAuthenticated = false;
+                passwordInput.value = '';
+                errorMessage.classList.remove('show');
+                showLogin();
+            }
+
+            // ==================== CYBERSECURITY QUIZ ====================
+            // Cybersecurity Questions (unchanged from your original)
             const questions = [
                 {
                     question: "What is Cyber Security?",
@@ -592,10 +845,9 @@
             // Make functions global
             window.restartQuiz = restartQuiz;
             window.hardReset = hardReset;
-
-            // Load progress and start
-            loadProgress();
-            displayQuestion();
+            window.checkPassword = checkPassword;
+            window.handleKeyPress = handleKeyPress;
+            window.logout = logout;
 
             // Clear storage button
             document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
