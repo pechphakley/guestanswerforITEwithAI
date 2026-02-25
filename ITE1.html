@@ -3,86 +3,861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Stack Scholarship Quiz (with localStorage)</title>
+    <title>Spring Boot Basics Quiz - 50 Questions</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f7f9fc; }
-        h1 { text-align: center; }
-        .status-bar { background: #e2e6ea; padding: 10px 15px; border-radius: 30px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 500; font-size: 0.95rem; border: 1px solid #c0c6cc; }
-        .status-bar button { padding: 4px 12px; font-size: 0.8rem; background: #6c757d; }
-        .status-bar button:hover { background: #5a6268; }
-        .question { background: white; padding: 20px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .options { list-style: none; padding: 0; }
-        .option { padding: 12px; margin: 8px 0; background: #eef; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
-        .option:hover { background: #ddf; }
-        .option.correct { background: #d4edda; border: 2px solid #28a745; }
-        .option.incorrect { background: #f8d7da; border: 2px solid #dc3545; }
-        .feedback { margin-top: 15px; font-weight: bold; }
-        #result { margin-top: 30px; font-size: 1.4em; text-align: center; font-weight: bold; }
-        button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        .reset-small { background: #dc3545; margin-left: 10px; }
-        .reset-small:hover { background: #c82333; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6b8c5c 0%, #3d5a3c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d4b2c;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: #e8f0e8;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #3d5a3c;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3d5a3c, #6b8c5c);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #3d5a3c;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #3d5a3c;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #3d5a3c;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #3d5a3c, #6b8c5c);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3d5a3c;
+            border: 5px solid #ffc107;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #3d5a3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2d4b2c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(61, 90, 60, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Full Stack Development Scholarship Quiz</h1>
-    
-    <!-- status bar with localStorage info -->
-    <div class="status-bar" id="storageStatus">
-        <span id="progressMessage">Loading saved progress...</span>
-        <button id="clearStorageBtn" class="reset-small" title="Clear saved progress and restart">🗑️ clear save</button>
-    </div>
+    <div class="container">
+        <h1>🍃 Spring Boot Basics Quiz</h1>
+        <p class="subtitle">Test your knowledge of Spring Boot fundamentals (50 questions)</p>
+        
+        <div class="status-bar" id="storageStatus">
+            <span id="progressMessage">Loading your progress...</span>
+            <button id="clearStorageBtn">🗑️ Clear Save</button>
+        </div>
 
-    <div id="quiz"></div>
-    <div id="result"></div>
-    <div style="text-align: center; margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
-        <button onclick="restartQuiz()">↻ Restart from beginning</button>
-        <button onclick="hardReset()" style="background:#dc3545;">⟲ Full reset & clear storage</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div id="quiz"></div>
+        <div id="result" style="display: none;"></div>
+
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+            <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+        </div>
     </div>
 
     <script>
         (function() {
-            // ---------- question bank (unchanged, exactly as provided) ----------
+            // 50 Spring Boot Questions - Basic to Intermediate
             const questions = [
-                // Java Basic
-                { question: "What is the correct syntax to output \"Hello World\" in Java?", options: ["echo \"Hello World\";", "System.out.println(\"Hello World\");", "print(\"Hello World\");", "Console.write(\"Hello World\");"], correct: 1, explain: "System.out.println() is the standard way to print in Java." },
-                { question: "Which of the following is a valid variable declaration in Java?", options: ["int 1num = 5;", "int num = 5;", "int num- = 5;", "int num@ = 5;"], correct: 1, explain: "Variable names must start with a letter, underscore, or dollar sign." },
-                { question: "What is the default value of a boolean variable in Java?", options: ["true", "false", "0", "null"], correct: 1, explain: "Instance and local boolean variables default to false (local must be initialized)." },
-                // Add more Java questions here (you can copy from the previous list)
-                { question: "Which keyword is used to define a constant in Java?", options: ["const", "final", "static", "var"], correct: 1, explain: "'final' makes a variable immutable." },
-                { question: "What does JVM stand for?", options: ["Java Visual Model", "Java Virtual Machine", "Java Variable Manager", "Java Version Manager"], correct: 1, explain: "JVM executes Java bytecode." },
+                // Core Concepts (1-10)
+                {
+                    question: "What is Spring Boot?",
+                    options: [
+                        "A programming language",
+                        "A framework to simplify Spring application development",
+                        "A database management system",
+                        "A frontend framework"
+                    ],
+                    correct: 1,
+                    explain: "Spring Boot is a framework that simplifies Spring-based application development with auto-configuration and embedded servers."
+                },
+                {
+                    question: "What is the main advantage of Spring Boot over Spring Framework?",
+                    options: [
+                        "Better performance",
+                        "Auto-configuration and reduced boilerplate code",
+                        "More features",
+                        "Better security"
+                    ],
+                    correct: 1,
+                    explain: "Spring Boot provides auto-configuration and starter dependencies, reducing manual configuration and boilerplate code."
+                },
+                {
+                    question: "What does @SpringBootApplication annotation combine?",
+                    options: [
+                        "@Controller, @Service, @Repository",
+                        "@Configuration, @EnableAutoConfiguration, @ComponentScan",
+                        "@Bean, @Autowired, @Value",
+                        "@GetMapping, @PostMapping, @RequestMapping"
+                    ],
+                    correct: 1,
+                    explain: "@SpringBootApplication combines @Configuration, @EnableAutoConfiguration, and @ComponentScan [citation:1][citation:3]."
+                },
+                {
+                    question: "What is the default port for a Spring Boot application?",
+                    options: [
+                        "8080",
+                        "80",
+                        "443",
+                        "3306"
+                    ],
+                    correct: 0,
+                    explain: "Spring Boot applications run on port 8080 by default, configurable via server.port property [citation:10]."
+                },
+                {
+                    question: "What is Spring Initializr?",
+                    options: [
+                        "A dependency injection tool",
+                        "A web-based tool to bootstrap Spring Boot projects",
+                        "A database initializer",
+                        "A testing framework"
+                    ],
+                    correct: 1,
+                    explain: "Spring Initializr is a web tool that generates pre-configured Spring Boot projects with selected dependencies [citation:4]."
+                },
+                {
+                    question: "What is the purpose of Spring Boot Starters?",
+                    options: [
+                        "To start the application",
+                        "To bundle common dependencies together",
+                        "To initialize databases",
+                        "To start embedded servers"
+                    ],
+                    correct: 1,
+                    explain: "Starters are dependency descriptors that bundle common dependencies for specific features (e.g., spring-boot-starter-web) [citation:1]."
+                },
+                {
+                    question: "What is spring-boot-starter-web used for?",
+                    options: [
+                        "Database applications",
+                        "Security applications",
+                        "Web applications including REST APIs",
+                        "Testing applications"
+                    ],
+                    correct: 2,
+                    explain: "spring-boot-starter-web includes dependencies for building web applications, including Spring MVC and embedded Tomcat [citation:4]."
+                },
+                {
+                    question: "What is the minimum Java version required for Spring Boot 3.x?",
+                    options: [
+                        "Java 8",
+                        "Java 11",
+                        "Java 17",
+                        "Java 21"
+                    ],
+                    correct: 2,
+                    explain: "Spring Boot 3.x requires Java 17 or higher as the baseline [citation:1]."
+                },
+                {
+                    question: "What is the purpose of application.properties file?",
+                    options: [
+                        "To store Java code",
+                        "To configure Spring Boot application properties",
+                        "To define database schemas",
+                        "To write business logic"
+                    ],
+                    correct: 1,
+                    explain: "application.properties (or application.yml) is used for external configuration of Spring Boot applications [citation:1]."
+                },
+                {
+                    question: "What is Spring Boot DevTools?",
+                    options: [
+                        "A development tool for automatic restarts and live reload",
+                        "A database tool",
+                        "A deployment tool",
+                        "A security tool"
+                    ],
+                    correct: 0,
+                    explain: "DevTools enhances development experience with automatic restarts, live reload, and faster feedback [citation:4]."
+                },
 
-                // Java Intermediate & Advanced (sample)
-                { question: "What is encapsulation in Java?", options: ["Inheriting properties", "Hiding internal details", "Multiple methods same name", "Multiple interfaces"], correct: 1, explain: "Encapsulation bundles data and methods, hiding implementation." },
-                { question: "Difference between == and .equals()?", options: ["They are the same", "== checks reference, .equals() checks value", "== checks value", ".equals() for primitives"], correct: 1, explain: "== compares references; .equals() compares content (overridden in many classes)." },
-                { question: "What is the purpose of the volatile keyword?", options: ["Makes variable constant", "Ensures visibility across threads", "Allows multiple inheritance", "Handles GC"], correct: 1, explain: "volatile ensures changes are visible to all threads." },
+                // Annotations (11-20)
+                {
+                    question: "What is the purpose of @RestController annotation?",
+                    options: [
+                        "To create web controllers that return views",
+                        "To create RESTful web services returning data directly",
+                        "To define database repositories",
+                        "To configure beans"
+                    ],
+                    correct: 1,
+                    explain: "@RestController combines @Controller and @ResponseBody, returning data (JSON/XML) directly instead of views [citation:3][citation:9]."
+                },
+                {
+                    question: "What does @Autowired do?",
+                    options: [
+                        "Creates a new bean",
+                        "Automatically injects dependencies",
+                        "Maps HTTP requests",
+                        "Defines a REST endpoint"
+                    ],
+                    correct: 1,
+                    explain: "@Autowired is used for dependency injection, automatically wiring required beans [citation:6][citation:9]."
+                },
+                {
+                    question: "What is the difference between @Controller and @RestController?",
+                    options: [
+                        "No difference, they're the same",
+                        "@Controller returns views, @RestController returns data",
+                        "@Controller is newer than @RestController",
+                        "@RestController is for databases"
+                    ],
+                    correct: 1,
+                    explain: "@Controller returns view names (HTML), while @RestController returns data (JSON/XML) directly [citation:1][citation:3]."
+                },
+                {
+                    question: "What does @Service annotation indicate?",
+                    options: [
+                        "A web controller",
+                        "A data access component",
+                        "A service layer component with business logic",
+                        "A configuration class"
+                    ],
+                    correct: 2,
+                    explain: "@Service marks a class as a service layer component containing business logic [citation:6][citation:9]."
+                },
+                {
+                    question: "What is @Repository used for?",
+                    options: [
+                        "Web controllers",
+                        "Service layer",
+                        "Data access layer (DAO) components",
+                        "Configuration"
+                    ],
+                    correct: 2,
+                    explain: "@Repository marks data access components that interact with the database [citation:1][citation:6]."
+                },
+                {
+                    question: "What is the purpose of @RequestMapping?",
+                    options: [
+                        "To inject dependencies",
+                        "To map HTTP requests to handler methods",
+                        "To create beans",
+                        "To configure the application"
+                    ],
+                    correct: 1,
+                    explain: "@RequestMapping maps web requests to specific controller methods, defining URL patterns [citation:3][citation:10]."
+                },
+                {
+                    question: "What do @GetMapping, @PostMapping, etc. represent?",
+                    options: [
+                        "Specialized versions of @RequestMapping for specific HTTP methods",
+                        "New annotations for database operations",
+                        "Testing annotations",
+                        "Security annotations"
+                    ],
+                    correct: 0,
+                    explain: "@GetMapping, @PostMapping, @PutMapping, @DeleteMapping are shortcuts for @RequestMapping with specific HTTP methods [citation:3]."
+                },
+                {
+                    question: "What does @PathVariable do?",
+                    options: [
+                        "Injects request parameters",
+                        "Maps the request body to an object",
+                        "Captures values from the URL template",
+                        "Defines a bean"
+                    ],
+                    correct: 2,
+                    explain: "@PathVariable extracts values from URI templates (e.g., /users/{id}) [citation:3]."
+                },
+                {
+                    question: "What is @RequestParam used for?",
+                    options: [
+                        "Capturing URL path variables",
+                        "Capturing request parameters from query string",
+                        "Reading request body",
+                        "Defining request headers"
+                    ],
+                    correct: 1,
+                    explain: "@RequestParam captures query parameters from the URL (e.g., ?age=25) [citation:3]."
+                },
+                {
+                    question: "What does @RequestBody do?",
+                    options: [
+                        "Maps HTTP request body to a Java object",
+                        "Creates HTTP response body",
+                        "Defines request parameters",
+                        "Maps URL variables"
+                    ],
+                    correct: 0,
+                    explain: "@RequestBody binds the HTTP request body (JSON/XML) to a Java object, typically in POST/PUT requests [citation:3]."
+                },
 
-                // HTML/CSS
-                { question: "What does HTML stand for?", options: ["High Text Markup Language", "Hyper Text Markup Language", "Hyper Transfer Markup Language", "None"], correct: 1, explain: "Hyper Text Markup Language." },
-                { question: "How do you select an element with id \"demo\" in CSS?", options: [".demo", "#demo", "demo", "*demo"], correct: 1, explain: "ID selector uses #." },
+                // Auto-configuration & Starters (21-25)
+                {
+                    question: "How does Spring Boot auto-configuration work?",
+                    options: [
+                        "Through XML configuration files",
+                        "By scanning classpath dependencies and using @Conditional annotations",
+                        "Through manual bean definitions only",
+                        "By reading environment variables only"
+                    ],
+                    correct: 1,
+                    explain: "Auto-configuration scans classpath dependencies and uses @Conditional annotations to configure beans automatically [citation:1]."
+                },
+                {
+                    question: "How can you exclude a specific auto-configuration class?",
+                    options: [
+                        "By deleting the dependency",
+                        "Using exclude attribute in @SpringBootApplication or properties file",
+                        "By overriding all beans",
+                        "Auto-configuration cannot be excluded"
+                    ],
+                    correct: 1,
+                    explain: "Use @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class}) or spring.autoconfigure.exclude property [citation:1][citation:4]."
+                },
+                {
+                    question: "What is spring-boot-starter-data-jpa used for?",
+                    options: [
+                        "Web development",
+                        "Security",
+                        "Database access with JPA and Hibernate",
+                        "Testing"
+                    ],
+                    correct: 2,
+                    explain: "spring-boot-starter-data-jpa includes dependencies for database access using JPA and Hibernate [citation:4][citation:10]."
+                },
+                {
+                    question: "What is the purpose of @Entity annotation?",
+                    options: [
+                        "Marks a class as a Spring bean",
+                        "Marks a class as a JPA entity mapped to a database table",
+                        "Marks a REST controller",
+                        "Marks a configuration class"
+                    ],
+                    correct: 1,
+                    explain: "@Entity is a JPA annotation that marks a class as a database entity, mapped to a table [citation:1][citation:9]."
+                },
+                {
+                    question: "What is spring.jpa.hibernate.ddl-auto property?",
+                    options: [
+                        "Configures logging level",
+                        "Controls database schema generation (create, update, validate, none)",
+                        "Sets port number",
+                        "Configures cache"
+                    ],
+                    correct: 1,
+                    explain: "ddl-auto controls schema generation: none, update, create, create-drop, or validate [citation:1]."
+                },
 
-                // JavaScript
-                { question: "What is a closure in JavaScript?", options: ["A loop", "Function with access to outer scope", "Object method", "Variable type"], correct: 1, explain: "Closures allow inner functions to access outer variables." },
-                { question: "What is the purpose of async/await?", options: ["Create loops", "Handle async operations synchronously", "Define classes", "Manipulate arrays"], correct: 1, explain: "Makes asynchronous code look synchronous." },
+                // Configuration & Properties (26-30)
+                {
+                    question: "How do you read custom properties from application.properties?",
+                    options: [
+                        "Using @Value annotation",
+                        "Using System.getProperty()",
+                        "Properties cannot be read",
+                        "Using @RequestMapping"
+                    ],
+                    correct: 0,
+                    explain: "Use @Value(\"${property.name}\") or @ConfigurationProperties to inject custom properties [citation:1][citation:10]."
+                },
+                {
+                    question: "What are Spring Boot Profiles?",
+                    options: [
+                        "User profiles",
+                        "Environment-specific configurations (dev, test, prod)",
+                        "Logging profiles",
+                        "Security profiles"
+                    ],
+                    correct: 1,
+                    explain: "Profiles allow different configurations for different environments using application-{profile}.properties files [citation:1][citation:4]."
+                },
+                {
+                    question: "How do you activate a Spring profile?",
+                    options: [
+                        "Through @Profile annotation only",
+                        "Using spring.profiles.active property or command line",
+                        "Profiles activate automatically",
+                        "Through application code only"
+                    ],
+                    correct: 1,
+                    explain: "Activate profiles via spring.profiles.active property, command line, or environment variables [citation:1]."
+                },
+                {
+                    question: "What is @ConfigurationProperties used for?",
+                    options: [
+                        "Defining beans",
+                        "Binding external properties to a Java object",
+                        "Creating REST endpoints",
+                        "Enabling auto-configuration"
+                    ],
+                    correct: 1,
+                    explain: "@ConfigurationProperties binds external configuration properties to a structured Java object [citation:1]."
+                },
+                {
+                    question: "What is the difference between application.properties and application.yml?",
+                    options: [
+                        "They serve different purposes",
+                        "YAML offers more structured, hierarchical configuration format",
+                        "Properties files are deprecated",
+                        "YAML is faster"
+                    ],
+                    correct: 1,
+                    explain: "YAML provides a more readable, hierarchical format for complex configurations compared to flat properties files [citation:4]."
+                },
 
-                // SQL
-                { question: "Which SQL keyword retrieves data?", options: ["GET", "SELECT", "RETRIEVE", "FETCH"], correct: 1, explain: "SELECT is used to query data." },
-                { question: "Difference between INNER JOIN and LEFT JOIN?", options: ["Same", "INNER: matching rows, LEFT: all from left", "LEFT is faster", "INNER allows nulls"], correct: 1, explain: "LEFT JOIN includes all rows from the left table." },
+                // Actuator & Monitoring (31-33)
+                {
+                    question: "What is Spring Boot Actuator?",
+                    options: [
+                        "A security module",
+                        "A module for monitoring and managing applications",
+                        "A database connector",
+                        "A testing framework"
+                    ],
+                    correct: 1,
+                    explain: "Actuator provides production-ready features like health checks, metrics, and environment information [citation:1][citation:4]."
+                },
+                {
+                    question: "Which dependency adds Actuator to a Spring Boot project?",
+                    options: [
+                        "spring-boot-starter-web",
+                        "spring-boot-starter-actuator",
+                        "spring-boot-starter-data-jpa",
+                        "spring-boot-starter-security"
+                    ],
+                    correct: 1,
+                    explain: "Add spring-boot-starter-actuator dependency to enable Actuator endpoints [citation:1]."
+                },
+                {
+                    question: "What information does /actuator/health endpoint provide?",
+                    options: [
+                        "Database schema",
+                        "Application health status",
+                        "User details",
+                        "Error logs"
+                    ],
+                    correct: 1,
+                    explain: "The health endpoint shows application health status (UP/DOWN) and component health indicators [citation:1]."
+                },
 
-                // English (based on institute description)
-                { question: "What is the main focus of the institute's basic course?", options: ["Graphic Design", "Full Stack Development", "Marketing", "Accounting"], correct: 1, explain: "The basic course is Full Stack Development." },
-                { question: "Which advanced course focuses on mobile apps?", options: ["Spring Advanced", "Data Analytics", "DevOps", "iOS Development"], correct: 3, explain: "iOS Development teaches mobile app creation for Apple devices." }
+                // Testing (34-35)
+                {
+                    question: "What is @SpringBootTest used for?",
+                    options: [
+                        "Unit testing only",
+                        "Integration testing loading full application context",
+                        "Testing REST endpoints only",
+                        "Testing database only"
+                    ],
+                    correct: 1,
+                    explain: "@SpringBootTest loads the complete application context for integration testing [citation:1][citation:3]."
+                },
+                {
+                    question: "What is @MockBean used for?",
+                    options: [
+                        "Creating real beans",
+                        "Adding mock objects to Spring application context",
+                        "Testing HTTP requests",
+                        "Configuring databases"
+                    ],
+                    correct: 1,
+                    explain: "@MockBean adds mock objects to the Spring context, useful for isolating components during testing [citation:1]."
+                },
+
+                // REST API (36-38)
+                {
+                    question: "What is ResponseEntity in Spring Boot?",
+                    options: [
+                        "A request object",
+                        "A wrapper for HTTP responses with status code, headers, and body",
+                        "A database entity",
+                        "A configuration class"
+                    ],
+                    correct: 1,
+                    explain: "ResponseEntity represents the entire HTTP response, including status code, headers, and body [citation:1]."
+                },
+                {
+                    question: "How do you handle exceptions globally in Spring Boot?",
+                    options: [
+                        "Using try-catch blocks everywhere",
+                        "Using @ControllerAdvice and @ExceptionHandler",
+                        "Exceptions cannot be handled globally",
+                        "Using @RestController"
+                    ],
+                    correct: 1,
+                    explain: "@ControllerAdvice with @ExceptionHandler provides global exception handling across controllers [citation:1][citation:7]."
+                },
+                {
+                    question: "What is the purpose of @CrossOrigin annotation?",
+                    options: [
+                        "To enable database cross-connection",
+                        "To enable Cross-Origin Resource Sharing for REST APIs",
+                        "To cross-compile code",
+                        "To enable cross-thread communication"
+                    ],
+                    correct: 1,
+                    explain: "@CrossOrigin enables CORS, allowing REST APIs to accept requests from different origins [citation:9]."
+                },
+
+                // Transaction Management (39-40)
+                {
+                    question: "What does @Transactional do?",
+                    options: [
+                        "Configures HTTP transactions",
+                        "Manages database transactions automatically",
+                        "Handles file transactions",
+                        "Configures security transactions"
+                    ],
+                    correct: 1,
+                    explain: "@Transactional manages database transactions, ensuring atomicity and rollback on failure [citation:1][citation:6]."
+                },
+                {
+                    question: "What are propagation behaviors in @Transactional?",
+                    options: [
+                        "HTTP methods",
+                        "How transactions behave when called from another transaction",
+                        "Database replication settings",
+                        "Cache propagation"
+                    ],
+                    correct: 1,
+                    explain: "Propagation defines how transactions interact (REQUIRED, REQUIRES_NEW, NESTED, etc.) [citation:1]."
+                },
+
+                // Caching (41-42)
+                {
+                    question: "How do you enable caching in Spring Boot?",
+                    options: [
+                        "By default it's enabled",
+                        "Add @EnableCaching and use @Cacheable annotations",
+                        "Through XML configuration only",
+                        "Caching cannot be enabled"
+                    ],
+                    correct: 1,
+                    explain: "Add @EnableCaching to a configuration class and use @Cacheable, @CacheEvict on methods [citation:1]."
+                },
+                {
+                    question: "What is @Cacheable used for?",
+                    options: [
+                        "Caching HTTP responses",
+                        "Indicating that method results should be cached",
+                        "Caching database connections",
+                        "Caching user sessions"
+                    ],
+                    correct: 1,
+                    explain: "@Cacheable marks methods whose return values should be cached for subsequent calls [citation:1]."
+                },
+
+                // Security (43-44)
+                {
+                    question: "Which dependency adds security to Spring Boot?",
+                    options: [
+                        "spring-boot-starter-web",
+                        "spring-boot-starter-security",
+                        "spring-boot-starter-data-jpa",
+                        "spring-boot-starter-actuator"
+                    ],
+                    correct: 1,
+                    explain: "spring-boot-starter-security adds authentication and authorization features [citation:1]."
+                },
+                {
+                    question: "What is JWT in Spring Security context?",
+                    options: [
+                        "Java Web Token for authentication",
+                        "Java Web Technology",
+                        "JavaScript Web Tool",
+                        "Just Web Testing"
+                    ],
+                    correct: 0,
+                    explain: "JWT (JSON Web Token) is commonly used for stateless authentication in Spring Boot applications [citation:1]."
+                },
+
+                // Deployment & Packaging (45-46)
+                {
+                    question: "How can you deploy a Spring Boot application?",
+                    options: [
+                        "Only as WAR to external servers",
+                        "As executable JAR with embedded server or WAR to external server",
+                        "Only as JAR file",
+                        "Cannot be deployed"
+                    ],
+                    correct: 1,
+                    explain: "Spring Boot apps can run as standalone JARs with embedded servers or deployed as WARs to external containers [citation:1]."
+                },
+                {
+                    question: "What command runs a Spring Boot JAR?",
+                    options: [
+                        "java -jar app.jar",
+                        "spring run app.jar",
+                        "boot run app.jar",
+                        "java run app.jar"
+                    ],
+                    correct: 0,
+                    explain: "Use 'java -jar app.jar' to run an executable Spring Boot JAR file [citation:1]."
+                },
+
+                // Microservices (47-48)
+                {
+                    question: "What is Spring Cloud used for?",
+                    options: [
+                        "Cloud deployment only",
+                        "Building microservices with tools like Eureka, Config Server",
+                        "Database cloud services",
+                        "Frontend cloud development"
+                    ],
+                    correct: 1,
+                    explain: "Spring Cloud provides tools for building microservices: service discovery (Eureka), configuration, API gateways [citation:1]."
+                },
+                {
+                    question: "What is an API Gateway in microservices?",
+                    options: [
+                        "A database gateway",
+                        "A single entry point for client requests to microservices",
+                        "A security protocol",
+                        "A deployment tool"
+                    ],
+                    correct: 1,
+                    explain: "API Gateway (like Spring Cloud Gateway) routes requests, handles cross-cutting concerns like authentication [citation:7]."
+                },
+
+                // Spring Boot 3.x Features (49-50)
+                {
+                    question: "What major change in Spring Boot 3.x relates to Java EE?",
+                    options: [
+                        "Nothing changed",
+                        "Migration from javax to jakarta namespace",
+                        "Removed all Java EE support",
+                        "Added more javax packages"
+                    ],
+                    correct: 1,
+                    explain: "Spring Boot 3.x migrated from javax.* to jakarta.* packages due to Jakarta EE 9+ [citation:1]."
+                },
+                {
+                    question: "What is Spring Native / GraalVM support?",
+                    options: [
+                        "Native language support",
+                        "Compiling Spring Boot apps to native executables for faster startup",
+                        "Native database support",
+                        "Native cloud support"
+                    ],
+                    correct: 1,
+                    explain: "Spring Native / GraalVM native image compilation creates native executables with faster startup and lower memory [citation:1]."
+                }
             ];
 
-            // ---------- localStorage key ----------
-            const STORAGE_KEY = 'fullstackQuiz';
-
-            // ---------- global state ----------
+            const STORAGE_KEY = 'springbootQuiz';
             let currentQuestion = 0;
             let score = 0;
             let autoSaveTimer = null;
 
-            // ---------- helper: load saved progress ----------
             function loadProgress() {
                 try {
                     const saved = localStorage.getItem(STORAGE_KEY);
@@ -92,67 +867,72 @@
                             typeof data.score === 'number') {
                             currentQuestion = data.current;
                             score = data.score;
-                            updateStatusMessage(`📂 Resumed from Q${currentQuestion+1}/${questions.length} (score ${score})`);
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
                             return;
                         }
                     }
                 } catch (e) {}
-                // fresh start defaults
                 currentQuestion = 0;
                 score = 0;
-                updateStatusMessage('✨ New session – progress will be saved');
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
             }
 
-            // ---------- save to localStorage (debounced) ----------
             function saveProgress() {
                 if (autoSaveTimer) clearTimeout(autoSaveTimer);
                 autoSaveTimer = setTimeout(() => {
                     try {
                         const data = { current: currentQuestion, score };
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                        updateStatusMessage(`💾 Saved at Q${currentQuestion+1}/${questions.length} · score ${score}`);
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
                     } catch (e) {}
                 }, 200);
             }
 
-            // ---------- update status bar text ----------
             function updateStatusMessage(text) {
                 document.getElementById('progressMessage').innerText = text;
             }
 
-            // ---------- clear storage & reset ----------
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
             function hardReset() {
                 localStorage.removeItem(STORAGE_KEY);
                 currentQuestion = 0;
                 score = 0;
-                updateStatusMessage('♻️ Storage cleared – starting fresh');
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
                 displayQuestion();
             }
 
-            // ---------- soft restart (beginning, keep storage overwritten) ----------
             function restartQuiz() {
                 currentQuestion = 0;
                 score = 0;
-                saveProgress();   // save fresh state
+                saveProgress();
+                updateProgressBar();
                 displayQuestion();
             }
 
-            // ---------- render current question ----------
             function displayQuestion() {
-                // if quiz finished
                 if (currentQuestion >= questions.length) {
-                    document.getElementById("quiz").innerHTML = "";
-                    document.getElementById("result").innerHTML = `Quiz Complete! Your score: ${score} / ${questions.length} (${Math.round(score/questions.length*100)}%)`;
-                    saveProgress();  // final state saved
+                    showResults();
                     return;
                 }
 
                 const q = questions[currentQuestion];
                 const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
                 quizDiv.innerHTML = `
-                    <div class="question">
-                        <h3>Question ${currentQuestion + 1} of ${questions.length}</h3>
-                        <p>${q.question}</p>
+                    <div class="question-container">
+                        <span class="question-number">Question ${currentQuestion + 1} of ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
                         <ul class="options">
                             ${q.options.map((opt, i) => `
                                 <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
@@ -161,57 +941,88 @@
                         <div class="feedback" id="feedback"></div>
                     </div>
                 `;
-                updateStatusMessage(`📌 Q${currentQuestion+1}/${questions.length} · score ${score}`);
+
+                updateStatusMessage(`📌 Question ${currentQuestion + 1}/${questions.length} · Score: ${score}`);
             }
 
-            // ---------- global checkAnswer (called from onclick) ----------
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 Excellent! You're a Spring Boot Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 Good job! You have solid Spring Boot knowledge!";
+                } else if (percentage >= 40) {
+                    message = "📚 Keep learning! You're on the right track!";
+                } else {
+                    message = "🍃 Time to brush up on Spring Boot basics!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">Your Score: ${score} / ${questions.length}</p>
+                    <p>Correct Answers: ${score}</p>
+                    <p>Incorrect Answers: ${questions.length - score}</p>
+                `;
+
+                saveProgress();
+            }
+
             window.checkAnswer = function(selected, correct) {
                 const options = document.querySelectorAll(".option");
-                if (!options.length) return; // already answered
+                if (!options.length) return;
 
                 options.forEach((opt, i) => {
-                    opt.onclick = null; // disable further clicks
+                    opt.onclick = null;
                     if (i === correct) {
                         opt.classList.add("correct");
-                    } else if (i === selected) {
+                    } else if (i === selected && i !== correct) {
                         opt.classList.add("incorrect");
                     }
                 });
 
                 const feedback = document.getElementById("feedback");
                 const q = questions[currentQuestion];
+                
                 if (selected === correct) {
-                    feedback.innerHTML = `<span style="color:green;">✓ Correct!</span> ${q.explain}`;
+                    feedback.innerHTML = `✅ <strong>Correct!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
                     score++;
                 } else {
-                    feedback.innerHTML = `<span style="color:red;">✗ Incorrect.</span> Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.innerHTML = `❌ <strong>Incorrect.</strong><br>Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
                 }
 
-                // move to next after delay and save
                 setTimeout(() => {
                     currentQuestion++;
-                    saveProgress();   // persist new index and score
+                    saveProgress();
+                    updateProgressBar();
                     displayQuestion();
-                }, 3000);
+                }, 3500);
             };
 
-            // ---------- expose functions to global for buttons ----------
             window.restartQuiz = restartQuiz;
             window.hardReset = hardReset;
 
-            // ---------- load saved progress & start ----------
             loadProgress();
             displayQuestion();
 
-            // ---------- attach clear button listener ----------
             document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
                 e.preventDefault();
-                if (confirm('Clear saved progress and restart from question 1?')) {
+                if (confirm('Clear saved progress and start from question 1?')) {
                     hardReset();
                 }
             });
 
-        })(); // end IIFE
+        })();
     </script>
 </body>
 </html>
