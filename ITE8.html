@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐧 Linux Basics Quiz - 30 Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .lock-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3.5em;
+            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.4);
+            animation: pulse 2s infinite;
+            border: 4px solid #f39c12;
+        }
+
+        .login-screen h2 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .login-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input:focus {
+            border-color: #2c3e50;
+            box-shadow: 0 0 20px rgba(44, 62, 80, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.4);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 1.1em;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hint-text {
+            color: #6c757d;
+            margin-top: 25px;
+            font-size: 1em;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #f39c12;
+        }
+
+        /* Quiz Screen Styles */
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: #e8f0fe;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #2c3e50;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #2c3e50;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #2c3e50;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #2c3e50;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            border: 5px solid #f39c12;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3498db;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <div class="lock-icon">🐧</div>
+            <h2>Linux Basics Quiz</h2>
+            <p>Enter the password to access the 30-question Linux Quiz</p>
+            
+            <div class="password-input-group">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
+                <button class="login-btn" onclick="checkPassword()">Access Quiz</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div class="hint-text">
+                    <strong>💡 Hint:</strong> The password is "linux2024" (try it!)
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1>🐧 Linux Basics Quiz (30 Questions)</h1>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+            <p class="subtitle">Test your knowledge of Linux fundamentals and commands</p>
+            
+            <div class="status-bar" id="storageStatus">
+                <span id="progressMessage">Loading your progress...</span>
+                <button id="clearStorageBtn">🗑️ Clear Save</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div id="quiz"></div>
+            <div id="result" style="display: none;"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+                <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== PASSWORD AUTHENTICATION ====================
+            const CORRECT_PASSWORD = "linux2024";
+            let isAuthenticated = sessionStorage.getItem('linuxQuizAuth') === 'true';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (isAuthenticated) {
+                showQuiz();
+            } else {
+                showLogin();
+            }
+
+            function showLogin() {
+                loginScreen.style.display = 'block';
+                quizScreen.style.display = 'none';
+            }
+
+            function showQuiz() {
+                loginScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                loadProgress();
+                displayQuestion();
+            }
+
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CORRECT_PASSWORD) {
+                    sessionStorage.setItem('linuxQuizAuth', 'true');
+                    isAuthenticated = true;
+                    errorMessage.classList.remove('show');
+                    passwordInput.classList.remove('error');
+                    passwordInput.value = '';
+                    showQuiz();
+                } else {
+                    passwordInput.classList.add('error');
+                    errorMessage.textContent = '❌ Incorrect password! Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 500);
+                }
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            }
+
+            function logout() {
+                sessionStorage.removeItem('linuxQuizAuth');
+                isAuthenticated = false;
+                passwordInput.value = '';
+                errorMessage.classList.remove('show');
+                showLogin();
+            }
+
+            // ==================== 30 LINUX QUESTIONS ====================
+            const questions = [
+                // Linux Basics (1-5)
+                {
+                    question: "Who created Linux?",
+                    options: [
+                        "Richard Stallman",
+                        "Linus Torvalds",
+                        "Bill Gates",
+                        "Steve Jobs"
+                    ],
+                    correct: 1,
+                    explain: "Linus Torvalds created Linux in 1991 as a free operating system kernel."
+                },
+                {
+                    question: "What is the Linux kernel?",
+                    options: [
+                        "A type of shell",
+                        "The core of the Linux operating system",
+                        "A Linux command",
+                        "A desktop environment"
+                    ],
+                    correct: 1,
+                    explain: "The kernel is the core component that manages hardware, system resources, and provides essential services."
+                },
+                {
+                    question: "Which of the following is a Linux distribution?",
+                    options: [
+                        "Windows 10",
+                        "macOS",
+                        "Ubuntu",
+                        "Android"
+                    ],
+                    correct: 2,
+                    explain: "Ubuntu is a popular Linux distribution. Windows and macOS are different operating systems."
+                },
+                {
+                    question: "What is the default shell in most Linux distributions?",
+                    options: [
+                        "Bash",
+                        "Powershell",
+                        "CMD",
+                        "Zsh"
+                    ],
+                    correct: 0,
+                    explain: "Bash (Bourne Again SHell) is the default shell in most Linux distributions."
+                },
+                {
+                    question: "What is the root user in Linux?",
+                    options: [
+                        "The first user created",
+                        "A regular user",
+                        "The superuser with administrative privileges",
+                        "A system service"
+                    ],
+                    correct: 2,
+                    explain: "Root is the superuser account with full system access and administrative privileges."
+                },
+
+                // File System Navigation (6-10)
+                {
+                    question: "Which command is used to change directories in Linux?",
+                    options: [
+                        "dir",
+                        "cd",
+                        "chdir",
+                        "mv"
+                    ],
+                    correct: 1,
+                    explain: "cd (change directory) is used to navigate between directories in Linux."
+                },
+                {
+                    question: "Which command shows the current working directory?",
+                    options: [
+                        "pwd",
+                        "cwd",
+                        "dir",
+                        "ls"
+                    ],
+                    correct: 0,
+                    explain: "pwd (Print Working Directory) displays the full path of the current directory."
+                },
+                {
+                    question: "Which command lists files and directories?",
+                    options: [
+                        "list",
+                        "show",
+                        "ls",
+                        "dir"
+                    ],
+                    correct: 2,
+                    explain: "ls lists files and directories in the current or specified directory."
+                },
+                {
+                    question: "What does the command 'ls -la' do?",
+                    options: [
+                        "Lists all files except hidden ones",
+                        "Lists all files including hidden ones with detailed information",
+                        "Lists only directories",
+                        "Lists files in reverse order"
+                    ],
+                    correct: 1,
+                    explain: "ls -la shows all files (including hidden) with detailed information like permissions, size, and date."
+                },
+                {
+                    question: "What is the home directory symbol in Linux?",
+                    options: [
+                        "~",
+                        "/",
+                        ".",
+                        ".."
+                    ],
+                    correct: 0,
+                    explain: "~ (tilde) represents the current user's home directory (e.g., /home/username)."
+                },
+
+                // File Operations (11-15)
+                {
+                    question: "Which command is used to copy files?",
+                    options: [
+                        "cp",
+                        "copy",
+                        "mv",
+                        "dd"
+                    ],
+                    correct: 0,
+                    explain: "cp (copy) is used to copy files or directories from one location to another."
+                },
+                {
+                    question: "Which command moves or renames files?",
+                    options: [
+                        "cp",
+                        "mv",
+                        "rename",
+                        "move"
+                    ],
+                    correct: 1,
+                    explain: "mv (move) is used to move files to different locations or rename them."
+                },
+                {
+                    question: "Which command removes/deletes files?",
+                    options: [
+                        "del",
+                        "rm",
+                        "remove",
+                        "delete"
+                    ],
+                    correct: 1,
+                    explain: "rm (remove) is used to delete files and directories. Use with caution as it's permanent."
+                },
+                {
+                    question: "How do you create an empty file in Linux?",
+                    options: [
+                        "new file.txt",
+                        "create file.txt",
+                        "touch file.txt",
+                        "mkfile file.txt"
+                    ],
+                    correct: 2,
+                    explain: "touch command creates an empty file or updates the timestamp of an existing file."
+                },
+                {
+                    question: "Which command is used to create a new directory?",
+                    options: [
+                        "mkdir",
+                        "makedir",
+                        "newdir",
+                        "createdir"
+                    ],
+                    correct: 0,
+                    explain: "mkdir (make directory) creates one or more new directories."
+                },
+
+                // File Permissions (16-20)
+                {
+                    question: "What do the first 10 characters in 'ls -l' output represent?",
+                    options: [
+                        "File size",
+                        "File permissions",
+                        "Owner name",
+                        "Creation date"
+                    ],
+                    correct: 1,
+                    explain: "The first 10 characters show file type and permissions (e.g., -rwxr-xr-x)."
+                },
+                {
+                    question: "In Linux permissions, what does 'r' mean?",
+                    options: [
+                        "Run",
+                        "Read",
+                        "Remove",
+                        "Rename"
+                    ],
+                    correct: 1,
+                    explain: "r stands for read permission, allowing a file to be read or directory contents to be listed."
+                },
+                {
+                    question: "What does 'chmod' command do?",
+                    options: [
+                        "Changes file ownership",
+                        "Changes file permissions",
+                        "Changes file name",
+                        "Changes file location"
+                    ],
+                    correct: 1,
+                    explain: "chmod (change mode) modifies file permissions for owner, group, and others."
+                },
+                {
+                    question: "What is the permission value for read, write, execute (rwx)?",
+                    options: [
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                    ],
+                    correct: 3,
+                    explain: "In octal permissions, read=4, write=2, execute=1, so rwx = 4+2+1 = 7."
+                },
+                {
+                    question: "What does 'chown' command do?",
+                    options: [
+                        "Changes file permissions",
+                        "Changes file owner and group",
+                        "Changes file name",
+                        "Checks file ownership"
+                    ],
+                    correct: 1,
+                    explain: "chown (change owner) changes the user and/or group ownership of files or directories."
+                },
+
+                // Text Processing (21-24)
+                {
+                    question: "Which command displays the content of a file?",
+                    options: [
+                        "show",
+                        "display",
+                        "cat",
+                        "print"
+                    ],
+                    correct: 2,
+                    explain: "cat (concatenate) displays the contents of one or more files."
+                },
+                {
+                    question: "Which command is used to view files page by page?",
+                    options: [
+                        "more or less",
+                        "page",
+                        "view",
+                        "show"
+                    ],
+                    correct: 0,
+                    explain: "more and less are pagers that display files one screen at a time, with less being more advanced."
+                },
+                {
+                    question: "Which command searches for patterns in files?",
+                    options: [
+                        "find",
+                        "search",
+                        "grep",
+                        "locate"
+                    ],
+                    correct: 2,
+                    explain: "grep (global regular expression print) searches for patterns within file contents."
+                },
+                {
+                    question: "What is the difference between 'find' and 'grep'?",
+                    options: [
+                        "They are the same",
+                        "find searches for files, grep searches within files",
+                        "grep searches for files, find searches within files",
+                        "find is faster"
+                    ],
+                    correct: 1,
+                    explain: "find locates files by name/attributes, while grep searches for patterns inside file contents."
+                },
+
+                // Process Management (25-27)
+                {
+                    question: "Which command shows running processes?",
+                    options: [
+                        "ps",
+                        "procs",
+                        "tasklist",
+                        "showprocs"
+                    ],
+                    correct: 0,
+                    explain: "ps (process status) displays information about active processes."
+                },
+                {
+                    question: "Which command terminates a process?",
+                    options: [
+                        "end",
+                        "kill",
+                        "stop",
+                        "term"
+                    ],
+                    correct: 1,
+                    explain: "kill sends a signal to terminate a process. Use 'kill -9' for force termination."
+                },
+                {
+                    question: "What does the 'top' command do?",
+                    options: [
+                        "Shows the top files",
+                        "Real-time display of system processes and resource usage",
+                        "Goes to the top of a file",
+                        "Lists top commands"
+                    ],
+                    correct: 1,
+                    explain: "top shows real-time system summary, running processes, and resource usage."
+                },
+
+                // Package Management (28-30)
+                {
+                    question: "What is APT in Debian-based systems?",
+                    options: [
+                        "A text editor",
+                        "Package management tool",
+                        "File system",
+                        "Network protocol"
+                    ],
+                    correct: 1,
+                    explain: "APT (Advanced Package Tool) manages software packages in Debian/Ubuntu systems."
+                },
+                {
+                    question: "Which command installs packages using apt?",
+                    options: [
+                        "apt install",
+                        "apt-get install",
+                        "Both are valid",
+                        "apt add"
+                    ],
+                    correct: 2,
+                    explain: "Both 'apt install' and 'apt-get install' are used to install packages in Debian-based systems."
+                },
+                {
+                    question: "What is a PPA in Ubuntu?",
+                    options: [
+                        "Personal Package Archive",
+                        "Primary Package Application",
+                        "Private Program Access",
+                        "Public Protocol Address"
+                    ],
+                    correct: 0,
+                    explain: "PPA (Personal Package Archive) allows developers to distribute software outside the official repositories."
+                }
+            ];
+
+            const STORAGE_KEY = 'linuxQuiz';
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
+            }
+
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function displayQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
+                quizDiv.innerHTML = `
+                    <div class="question-container">
+                        <span class="question-number">Question ${currentQuestion + 1} of ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+
+                updateStatusMessage(`📌 Question ${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+            }
+
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 Excellent! You're a Linux Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 Good job! You have solid Linux knowledge!";
+                } else if (percentage >= 40) {
+                    message = "📚 Keep learning! You're on the right track!";
+                } else {
+                    message = "🐧 Time to brush up on Linux basics!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">Your Score: ${score} / ${questions.length}</p>
+                    <p>Correct Answers: ${score}</p>
+                    <p>Incorrect Answers: ${questions.length - score}</p>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Take Quiz Again</button>
+                `;
+
+                saveProgress();
+            }
+
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return;
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null;
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected && i !== correct) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                
+                if (selected === correct) {
+                    feedback.innerHTML = `✅ <strong>Correct!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
+                    score++;
+                } else {
+                    feedback.innerHTML = `❌ <strong>Incorrect.</strong><br>Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
+                }
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();
+                    updateProgressBar();
+                    displayQuestion();
+                }, 3500);
+            };
+
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+            window.checkPassword = checkPassword;
+            window.handleKeyPress = handleKeyPress;
+            window.logout = logout;
+
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and start from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

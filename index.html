@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             width: 100%;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -139,6 +139,11 @@
             animation-delay: 0.4s;
         }
 
+        .btn-ite5 {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            animation-delay: 0.5s;
+        }
+
         /* Quick access section */
         .quick-access {
             text-align: center;
@@ -161,23 +166,23 @@
         .quick-btn-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .quick-btn {
-            padding: 15px 30px;
-            border: 2px solid white;
+            padding: 12px 25px;
+            border: 2px solid;
             border-radius: 45px;
-            color: white;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.2em;
+            font-size: 1.1em;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             z-index: 1;
-            min-width: 120px;
+            min-width: 90px;
+            background: transparent;
         }
 
         .quick-btn::before {
@@ -187,18 +192,32 @@
             left: 0;
             width: 0;
             height: 100%;
-            background: white;
+            background: currentColor;
             transition: width 0.3s ease;
             z-index: -1;
+            opacity: 0.2;
         }
 
         .quick-btn:hover {
-            color: #333;
+            color: #333 !important;
+            border-color: transparent !important;
         }
 
         .quick-btn:hover::before {
             width: 100%;
         }
+
+        /* Color variants for quick buttons */
+        .quick-btn[data-course="1"] { border-color: #667eea; color: #667eea; }
+        .quick-btn[data-course="2"] { border-color: #f093fb; color: #f093fb; }
+        .quick-btn[data-course="3"] { border-color: #4facfe; color: #4facfe; }
+        .quick-btn[data-course="4"] { border-color: #43e97b; color: #43e97b; }
+        .quick-btn[data-course="5"] { border-color: #fa709a; color: #fa709a; }
+        .quick-btn[data-course="6"] { border-color: #a18cd1; color: #a18cd1; }
+        .quick-btn[data-course="7"] { border-color: #fbc2eb; color: #fbc2eb; }
+        .quick-btn[data-course="8"] { border-color: #ff9a9e; color: #ff9a9e; }
+        .quick-btn[data-course="9"] { border-color: #fad0c4; color: #fad0c4; }
+        .quick-btn[data-course="10"] { border-color: #ffd1ff; color: #ffd1ff; }
 
         .footer {
             text-align: center;
@@ -218,6 +237,7 @@
             justify-content: center;
             gap: 20px;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .footer-links a {
@@ -225,13 +245,15 @@
             text-decoration: none;
             font-size: 1em;
             transition: all 0.3s;
-            padding: 5px 10px;
+            padding: 5px 15px;
             border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .footer-links a:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             color: white;
+            transform: translateY(-2px);
         }
 
         /* Animations */
@@ -307,6 +329,13 @@
             bottom: -50px;
         }
 
+        /* Glow effects */
+        .btn-tie1:hover { box-shadow: 0 0 30px rgba(102, 126, 234, 0.7); }
+        .btn-ite2:hover { box-shadow: 0 0 30px rgba(240, 147, 251, 0.7); }
+        .btn-ite3:hover { box-shadow: 0 0 30px rgba(79, 172, 254, 0.7); }
+        .btn-ite4:hover { box-shadow: 0 0 30px rgba(67, 233, 123, 0.7); }
+        .btn-ite5:hover { box-shadow: 0 0 30px rgba(250, 112, 154, 0.7); }
+
         /* Responsive design */
         @media (max-width: 768px) {
             .container {
@@ -324,9 +353,9 @@
             }
 
             .quick-btn {
-                padding: 12px 25px;
+                padding: 10px 20px;
                 font-size: 1em;
-                min-width: 100px;
+                min-width: 80px;
             }
 
             .course-btn::after {
@@ -346,38 +375,19 @@
             }
 
             .quick-btn-container {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
             }
 
             .quick-btn {
-                width: 100%;
-                max-width: 200px;
+                width: auto;
+                min-width: 70px;
             }
 
             h1 {
                 font-size: 1.8em;
             }
-        }
-
-        /* Glow effects */
-        .btn-tie1:hover {
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.7);
-        }
-
-        .btn-ite2:hover {
-            box-shadow: 0 0 30px rgba(240, 147, 251, 0.7);
-        }
-
-        .btn-ite3:hover {
-            box-shadow: 0 0 30px rgba(79, 172, 254, 0.7);
-        }
-
-        .btn-ite4:hover {
-            box-shadow: 0 0 30px rgba(67, 233, 123, 0.7);
-        }
-        .btn-ite5:hover {
-            box-shadow: 0 0 30px rgba(67, 233, 123, 0.7);
         }
     </style>
 </head>
@@ -390,7 +400,7 @@
         <div class="button-container">
             <a href="ITE1.html" class="course-btn btn-tie1" data-tooltip="Introduction to IT">
                 <span class="btn-icon">1</span>
-                TIE1
+                ITE1
             </a>
 
             <a href="ITE2.html" class="course-btn btn-ite2" data-tooltip="Web Development">
@@ -407,6 +417,7 @@
                 <span class="btn-icon">4</span>
                 ITE4
             </a>
+            
             <a href="ITE5.html" class="course-btn btn-ite5" data-tooltip="Cybersecurity">
                 <span class="btn-icon">5</span>
                 ITE5
@@ -417,11 +428,16 @@
         <div class="quick-access">
             <h3>Quick Access (Same Tab)</h3>
             <div class="quick-btn-container">
-                <a href="ITE1.html" class="quick-btn" style="border-color: #667eea; color: #667eea;">TIE1</a>
-                <a href="ITE2.html" class="quick-btn" style="border-color: #f093fb; color: #f093fb;">ITE2</a>
-                <a href="ITE3.html" class="quick-btn" style="border-color: #4facfe; color: #4facfe;">ITE3</a>
-                <a href="ITE4.html" class="quick-btn" style="border-color: #43e97b; color: #43e97b;">ITE4</a>
-                <a href="ITE5.html" class="quick-btn" style="border-color: #43e97b; color: #43e97b;">ITE5</a>
+                <a href="ITE1.html" class="quick-btn" data-course="1">ITE1</a>
+                <a href="ITE2.html" class="quick-btn" data-course="2">ITE2</a>
+                <a href="ITE3.html" class="quick-btn" data-course="3">ITE3</a>
+                <a href="ITE4.html" class="quick-btn" data-course="4">ITE4</a>
+                <a href="ITE5.html" class="quick-btn" data-course="5">ITE5</a>
+                <a href="ITE6.html" class="quick-btn" data-course="6">ITE6</a>
+                <a href="ITE7.html" class="quick-btn" data-course="7">ITE7</a>
+                <a href="ITE8.html" class="quick-btn" data-course="8">ITE8</a>
+                <a href="ITE9.html" class="quick-btn" data-course="9">ITE9</a>
+                <a href="ITE10.html" class="quick-btn" data-course="10">ITE10</a>
             </div>
         </div>
 
@@ -442,7 +458,10 @@
         document.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function(e) {
                 // Don't prevent default - we want normal navigation
-                console.log(`Navigating to: ${this.getAttribute('href')} in the SAME tab`);
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    console.log(`Navigating to: ${href} in the SAME tab`);
+                }
                 
                 // Add click animation
                 this.style.transform = 'scale(0.95)';
@@ -452,26 +471,38 @@
             });
         });
 
-        // Keyboard navigation (1-4 keys)
+        // Keyboard navigation (1-0 keys for courses 1-10)
         document.addEventListener('keydown', function(e) {
             const key = e.key;
-            const buttons = {
-                '1': 'a[href="ITE1.html"]',
-                '2': 'a[href="ITE2.html"]',
-                '3': 'a[href="ITE3.html"]',
-                '4': 'a[href="ITE4.html"]',
-                '5': 'a[href="ITE5.html"]'
-                
-            };
-            
-            if (buttons[key]) {
+            // Handle number keys 1-9 and 0 for 10
+            if (key >= '1' && key <= '9') {
                 e.preventDefault();
-                const link = document.querySelector(buttons[key]);
-                console.log(`Keyboard shortcut ${key} pressed - navigating to ${link.getAttribute('href')}`);
-                window.location.href = link.getAttribute('href'); // Explicit same-tab navigation
+                const link = document.querySelector(`.quick-btn[data-course="${key}"]`);
+                if (link) {
+                    console.log(`Keyboard shortcut ${key} pressed - navigating to ${link.getAttribute('href')}`);
+                    window.location.href = link.getAttribute('href');
+                }
+            } else if (key === '0') {
+                e.preventDefault();
+                const link = document.querySelector('.quick-btn[data-course="10"]');
+                if (link) {
+                    console.log('Keyboard shortcut 0 pressed - navigating to ITE10');
+                    window.location.href = link.getAttribute('href');
+                }
             }
+        });
+
+        // Add smooth scrolling for footer links
+        document.querySelectorAll('.footer-links a[href="#"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Scroll to top smoothly
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
         });
     </script>
 </body>
 </html>
-

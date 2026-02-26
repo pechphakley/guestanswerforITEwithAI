@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 តក្កវិទ្យា - Logic Quiz for Scholarship Exam</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a3093 0%, #a044ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .lock-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #6a3093, #a044ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3.5em;
+            box-shadow: 0 10px 30px rgba(106, 48, 147, 0.4);
+            animation: pulse 2s infinite;
+            border: 4px solid #ffd700;
+        }
+
+        .login-screen h2 {
+            color: #6a3093;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .login-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input:focus {
+            border-color: #6a3093;
+            box-shadow: 0 0 20px rgba(106, 48, 147, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #6a3093, #a044ff);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(106, 48, 147, 0.4);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 1.1em;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hint-text {
+            color: #6c757d;
+            margin-top: 25px;
+            font-size: 1em;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        /* Quiz Screen Styles */
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-header h1 {
+            color: #6a3093;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .khmer-text {
+            font-family: 'MoolBoran', 'Khmer OS', 'Khmer OS System', sans-serif;
+            color: #a044ff;
+            font-size: 0.7em;
+            display: block;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .status-bar {
+            background: #e8f0fe;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #6a3093;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6a3093, #a044ff);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #6a3093;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #6a3093;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #6a3093;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #6a3093, #a044ff);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #6a3093;
+            border: 5px solid #ffd700;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #6a3093;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #a044ff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 48, 147, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <div class="lock-icon">🧠</div>
+            <h2>តក្កវិទ្យា - Logic Quiz</h2>
+            <p>Enter the password to access the Logic Quiz for Scholarship Exam</p>
+            
+            <div class="password-input-group">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
+                <button class="login-btn" onclick="checkPassword()">Access Quiz</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div class="hint-text">
+                    <strong>💡 Hint:</strong> The password is "logic2024" (try it!)
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1>🧠 តក្កវិទ្យា - Logic Quiz <span class="khmer-text">(សម្រាប់ប្រឡងបាក់ឌុប)</span></h1>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+            <p class="subtitle">30 logic questions for scholarship exam preparation</p>
+            
+            <div class="status-bar" id="storageStatus">
+                <span id="progressMessage">Loading your progress...</span>
+                <button id="clearStorageBtn">🗑️ Clear Save</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div id="quiz"></div>
+            <div id="result" style="display: none;"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+                <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== PASSWORD AUTHENTICATION ====================
+            const CORRECT_PASSWORD = "logic2024";
+            let isAuthenticated = sessionStorage.getItem('logicQuizAuth') === 'true';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (isAuthenticated) {
+                showQuiz();
+            } else {
+                showLogin();
+            }
+
+            function showLogin() {
+                loginScreen.style.display = 'block';
+                quizScreen.style.display = 'none';
+            }
+
+            function showQuiz() {
+                loginScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                loadProgress();
+                displayQuestion();
+            }
+
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CORRECT_PASSWORD) {
+                    sessionStorage.setItem('logicQuizAuth', 'true');
+                    isAuthenticated = true;
+                    errorMessage.classList.remove('show');
+                    passwordInput.classList.remove('error');
+                    passwordInput.value = '';
+                    showQuiz();
+                } else {
+                    passwordInput.classList.add('error');
+                    errorMessage.textContent = '❌ Incorrect password! Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 500);
+                }
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            }
+
+            function logout() {
+                sessionStorage.removeItem('logicQuizAuth');
+                isAuthenticated = false;
+                passwordInput.value = '';
+                errorMessage.classList.remove('show');
+                showLogin();
+            }
+
+            // ==================== 30 LOGIC QUESTIONS ====================
+            const questions = [
+                // Propositional Logic (1-5)
+                {
+                    question: "What is the negation of 'All students passed the exam'?",
+                    options: [
+                        "No students passed the exam",
+                        "Some students did not pass the exam",
+                        "All students failed",
+                        "None of the above"
+                    ],
+                    correct: 1,
+                    explain: "The negation of 'All are' is 'Some are not'. If not all passed, then at least one did not pass."
+                },
+                {
+                    question: "If P → Q is true, and P is true, what can we conclude?",
+                    options: [
+                        "Q is false",
+                        "Q is true",
+                        "P is false",
+                        "Nothing can be concluded"
+                    ],
+                    correct: 1,
+                    explain: "This is modus ponens: If P implies Q, and P is true, then Q must be true."
+                },
+                {
+                    question: "What is the contrapositive of 'If it rains, then the ground is wet'?",
+                    options: [
+                        "If it doesn't rain, then the ground is not wet",
+                        "If the ground is not wet, then it did not rain",
+                        "If the ground is wet, then it rained",
+                        "If it rains, the ground is not wet"
+                    ],
+                    correct: 1,
+                    explain: "The contrapositive of P → Q is ¬Q → ¬P. So 'If ground not wet, then it did not rain'."
+                },
+                {
+                    question: "Which logical connective is represented by '∧'?",
+                    options: [
+                        "OR",
+                        "AND",
+                        "NOT",
+                        "IMPLIES"
+                    ],
+                    correct: 1,
+                    explain: "∧ represents logical AND (conjunction). It's true only when both operands are true."
+                },
+                {
+                    question: "What is the truth value of 'True AND False'?",
+                    options: [
+                        "True",
+                        "False",
+                        "Maybe",
+                        "Undefined"
+                    ],
+                    correct: 1,
+                    explain: "AND requires both operands to be true. Since one is false, the result is false."
+                },
+
+                // Logical Fallacies (6-10)
+                {
+                    question: "What is a logical fallacy?",
+                    options: [
+                        "A valid argument",
+                        "An error in reasoning that makes an argument invalid",
+                        "A mathematical proof",
+                        "A type of syllogism"
+                    ],
+                    correct: 1,
+                    explain: "A logical fallacy is an error in reasoning that renders an argument invalid or unsound."
+                },
+                {
+                    question: "What is the 'straw man' fallacy?",
+                    options: [
+                        "Attacking the person making the argument",
+                        "Misrepresenting someone's argument to make it easier to attack",
+                        "Assuming the conclusion in the premise",
+                        "Appealing to popularity"
+                    ],
+                    correct: 1,
+                    explain: "Straw man fallacy misrepresents an opponent's position to make it easier to refute."
+                },
+                {
+                    question: "What is 'ad hominem' fallacy?",
+                    options: [
+                        "Attacking the person instead of the argument",
+                        "Appealing to authority",
+                        "Using circular reasoning",
+                        "Making a hasty generalization"
+                    ],
+                    correct: 0,
+                    explain: "Ad hominem attacks the character or traits of the person making the argument rather than the argument itself."
+                },
+                {
+                    question: "What is the 'appeal to authority' fallacy?",
+                    options: [
+                        "Using experts in their field",
+                        "Claiming something is true because an authority figure said it, even if outside their expertise",
+                        "Proving something by logic",
+                        "Using scientific evidence"
+                    ],
+                    correct: 1,
+                    explain: "Appealing to authority becomes fallacious when the authority is not an expert in the relevant field."
+                },
+                {
+                    question: "What is 'circular reasoning'?",
+                    options: [
+                        "A logical circle diagram",
+                        "When the conclusion is assumed in the premise",
+                        "Reasoning in a circle shape",
+                        "Valid deductive reasoning"
+                    ],
+                    correct: 1,
+                    explain: "Circular reasoning (begging the question) occurs when the conclusion is assumed in the premise."
+                },
+
+                // Syllogisms (11-15)
+                {
+                    question: "What is a syllogism?",
+                    options: [
+                        "A type of logical argument with two premises and a conclusion",
+                        "A mathematical equation",
+                        "A scientific theory",
+                        "A type of fallacy"
+                    ],
+                    correct: 0,
+                    explain: "A syllogism is a logical argument that applies deductive reasoning to arrive at a conclusion from two premises."
+                },
+                {
+                    question: "All humans are mortal. Socrates is human. Therefore, Socrates is mortal. This is an example of?",
+                    options: [
+                        "Inductive reasoning",
+                        "Deductive reasoning",
+                        "Abductive reasoning",
+                        "Fallacious reasoning"
+                    ],
+                    correct: 1,
+                    explain: "This is deductive reasoning: moving from general premises to a specific conclusion."
+                },
+                {
+                    question: "All A are B. All B are C. Therefore, all A are C. This is?",
+                    options: [
+                        "Invalid",
+                        "Valid",
+                        "Fallacious",
+                        "Inductive"
+                    ],
+                    correct: 1,
+                    explain: "This is a valid syllogism. If all A are B and all B are C, then all A must be C."
+                },
+                {
+                    question: "Some A are B. Some B are C. Therefore, some A are C. This argument is?",
+                    options: [
+                        "Valid",
+                        "Invalid",
+                        "Always true",
+                        "Deductive"
+                    ],
+                    correct: 1,
+                    explain: "This is invalid. The 'some' that are B might be different groups."
+                },
+                {
+                    question: "No A are B. All C are B. Therefore, no C are A. This is?",
+                    options: [
+                        "Valid",
+                        "Invalid",
+                        "Fallacious",
+                        "Inductive"
+                    ],
+                    correct: 0,
+                    explain: "This is valid (Camestres syllogism). If no A are B and all C are B, then no C can be A."
+                },
+
+                // Mathematical Logic (16-20)
+                {
+                    question: "If 3x + 7 = 22, what is the value of x?",
+                    options: [
+                        "3",
+                        "5",
+                        "7",
+                        "15"
+                    ],
+                    correct: 1,
+                    explain: "3x + 7 = 22 → 3x = 15 → x = 5."
+                },
+                {
+                    question: "If all squares are rectangles, and all rectangles are quadrilaterals, then all squares are?",
+                    options: [
+                        "Polygons",
+                        "Quadrilaterals",
+                        "Triangles",
+                        "Circles"
+                    ],
+                    correct: 1,
+                    explain: "If all A are B and all B are C, then all A are C. So all squares are quadrilaterals."
+                },
+                {
+                    question: "What is the next number in the sequence: 2, 4, 8, 16, ...?",
+                    options: [
+                        "24",
+                        "32",
+                        "30",
+                        "64"
+                    ],
+                    correct: 1,
+                    explain: "Each number doubles the previous: 2×2=4, 4×2=8, 8×2=16, 16×2=32."
+                },
+                {
+                    question: "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?",
+                    options: [
+                        "5 minutes",
+                        "10 minutes",
+                        "100 minutes",
+                        "500 minutes"
+                    ],
+                    correct: 0,
+                    explain: "Each machine makes 1 widget in 5 minutes. 100 machines make 100 widgets in the same 5 minutes."
+                },
+                {
+                    question: "What is the logical equivalent of 'P AND Q'?",
+                    options: [
+                        "Q AND P",
+                        "P OR Q",
+                        "NOT P AND NOT Q",
+                        "P → Q"
+                    ],
+                    correct: 0,
+                    explain: "AND is commutative: P AND Q is logically equivalent to Q AND P."
+                },
+
+                // Critical Thinking (21-25)
+                {
+                    question: "If a statement and its negation are both true, what logical principle is violated?",
+                    options: [
+                        "Law of Identity",
+                        "Law of Non-contradiction",
+                        "Law of Excluded Middle",
+                        "Law of Syllogism"
+                    ],
+                    correct: 1,
+                    explain: "The Law of Non-contradiction states that a statement cannot be both true and false at the same time."
+                },
+                {
+                    question: "What is the Law of Excluded Middle?",
+                    options: [
+                        "Everything is either true or false",
+                        "Nothing is true",
+                        "Everything is false",
+                        "Some things are neither true nor false"
+                    ],
+                    correct: 0,
+                    explain: "The Law of Excluded Middle states that for any proposition, either it is true or its negation is true."
+                },
+                {
+                    question: "What is inductive reasoning?",
+                    options: [
+                        "Reasoning from general to specific",
+                        "Reasoning from specific observations to general conclusions",
+                        "Reasoning from premises to necessary conclusions",
+                        "Circular reasoning"
+                    ],
+                    correct: 1,
+                    explain: "Inductive reasoning moves from specific observations to broader generalizations and theories."
+                },
+                {
+                    question: "What is the difference between deductive and inductive reasoning?",
+                    options: [
+                        "They are the same",
+                        "Deductive guarantees conclusion, inductive gives probability",
+                        "Inductive guarantees conclusion, deductive gives probability",
+                        "Neither guarantees anything"
+                    ],
+                    correct: 1,
+                    explain: "Deductive reasoning guarantees the conclusion if premises are true. Inductive reasoning only provides probability."
+                },
+                {
+                    question: "What is a counterexample?",
+                    options: [
+                        "An example that proves an argument",
+                        "An example that disproves a statement or argument",
+                        "A mathematical proof",
+                        "A logical fallacy"
+                    ],
+                    correct: 1,
+                    explain: "A counterexample is an example that contradicts or disproves a statement or argument."
+                },
+
+                // Puzzles and Problem Solving (26-30)
+                {
+                    question: "You have two coins that total 30 cents, and one of them is not a nickel. What are the two coins?",
+                    options: [
+                        "Quarter and nickel",
+                        "Quarter and penny",
+                        "Dime and dime",
+                        "Quarter and dime"
+                    ],
+                    correct: 1,
+                    explain: "A quarter (25¢) and a nickel (5¢) total 30¢. One of them (the quarter) is not a nickel."
+                },
+                {
+                    question: "If you rearrange the letters 'CIFAIPC', you get the name of an:",
+                    options: [
+                        "Ocean",
+                        "Country",
+                        "City",
+                        "Animal"
+                    ],
+                    correct: 1,
+                    explain: "'CIFAIPC' rearranged spells 'PACIFIC' - an ocean, not a country. Actually it's an ocean."
+                },
+                {
+                    question: "Which word does NOT belong with the others?",
+                    options: [
+                        "Tiger",
+                        "Lion",
+                        "Elephant",
+                        "Leopard"
+                    ],
+                    correct: 2,
+                    explain: "Tiger, lion, and leopard are all big cats. Elephant is not a cat."
+                },
+                {
+                    question: "If all Bloops are Razzies and some Razzies are Lazzies, then:",
+                    options: [
+                        "All Bloops are Lazzies",
+                        "Some Bloops are Lazzies",
+                        "No conclusion can be drawn",
+                        "All Lazzies are Bloops"
+                    ],
+                    correct: 2,
+                    explain: "The Razzies that are Lazzies might be different from the Bloops. No valid conclusion about Bloops and Lazzies."
+                },
+                {
+                    question: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?",
+                    options: [
+                        "10¢",
+                        "5¢",
+                        "15¢",
+                        "20¢"
+                    ],
+                    correct: 1,
+                    explain: "If ball = x, bat = x + 1.00, then x + (x + 1.00) = 1.10 → 2x + 1.00 = 1.10 → 2x = 0.10 → x = 0.05 (5¢)."
+                }
+            ];
+
+            const STORAGE_KEY = 'logicQuiz';
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
+            }
+
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function displayQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
+                quizDiv.innerHTML = `
+                    <div class="question-container">
+                        <span class="question-number">សំណួរទី ${currentQuestion + 1} នៃ ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+
+                updateStatusMessage(`📌 សំណួរទី ${currentQuestion + 1}/${questions.length} · ពិន្ទុ: ${score}`);
+            }
+
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 ពូកែណាស់! You're a Logic Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 ធ្វើបានល្អ! You have solid logic skills!";
+                } else if (percentage >= 40) {
+                    message = "📚 បន្តការសិក្សា! You're on the right track!";
+                } else {
+                    message = "🧠 ត្រូវសិក្សាបន្ថែម! Time to brush up on logic!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>បញ្ចប់ការប្រឡង!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">ពិន្ទុរបស់អ្នក: ${score} / ${questions.length}</p>
+                    <p>ចម្លើយត្រឹមត្រូវ: ${score}</p>
+                    <p>ចម្លើយខុស: ${questions.length - score}</p>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">ធ្វើតេស្តម្តងទៀត</button>
+                `;
+
+                saveProgress();
+            }
+
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return;
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null;
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected && i !== correct) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                
+                if (selected === correct) {
+                    feedback.innerHTML = `✅ <strong>ត្រឹមត្រូវ!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
+                    score++;
+                } else {
+                    feedback.innerHTML = `❌ <strong>មិនត្រឹមត្រូវ.</strong><br>ចម្លើយត្រឹមត្រូវ: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
+                }
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();
+                    updateProgressBar();
+                    displayQuestion();
+                }, 3500);
+            };
+
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+            window.checkPassword = checkPassword;
+            window.handleKeyPress = handleKeyPress;
+            window.logout = logout;
+
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and start from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

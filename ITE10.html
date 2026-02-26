@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Web Development Quiz - 30 Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .lock-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3.5em;
+            box-shadow: 0 10px 30px rgba(15, 32, 39, 0.4);
+            animation: pulse 2s infinite;
+            border: 4px solid #ffd700;
+        }
+
+        .login-screen h2 {
+            color: #0f2027;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .login-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input:focus {
+            border-color: #0f2027;
+            box-shadow: 0 0 20px rgba(15, 32, 39, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(15, 32, 39, 0.4);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 1.1em;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hint-text {
+            color: #6c757d;
+            margin-top: 25px;
+            font-size: 1em;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+
+        /* Quiz Screen */
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-header h1 {
+            color: #0f2027;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .khmer-text {
+            font-family: 'MoolBoran', 'Khmer OS', 'Khmer OS System', sans-serif;
+            color: #2c5364;
+            font-size: 0.7em;
+            display: block;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .status-bar {
+            background: #e8f0fe;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #0f2027;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0f2027, #2c5364);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #0f2027;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #0f2027;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #0f2027;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0f2027;
+            border: 5px solid #ffd700;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #0f2027;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2c5364;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(15, 32, 39, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <div class="lock-icon">🌐</div>
+            <h2>Web Development Quiz</h2>
+            <p>Enter the password to access the Web Development Quiz</p>
+            
+            <div class="password-input-group">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
+                <button class="login-btn" onclick="checkPassword()">Access Quiz</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div class="hint-text">
+                    <strong>💡 Hint:</strong> The password is "webdev2024" (try it!)
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1>🌐 Web Development Quiz <span class="khmer-text">(ចំណេះដឹងទូទៅផ្នែក Web)</span></h1>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+            <p class="subtitle">30 questions to test your web development knowledge</p>
+            
+            <div class="status-bar" id="storageStatus">
+                <span id="progressMessage">Loading your progress...</span>
+                <button id="clearStorageBtn">🗑️ Clear Save</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div id="quiz"></div>
+            <div id="result" style="display: none;"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+                <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== PASSWORD AUTHENTICATION ====================
+            const CORRECT_PASSWORD = "webdev2024";
+            let isAuthenticated = sessionStorage.getItem('webdevQuizAuth') === 'true';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (isAuthenticated) {
+                showQuiz();
+            } else {
+                showLogin();
+            }
+
+            function showLogin() {
+                loginScreen.style.display = 'block';
+                quizScreen.style.display = 'none';
+            }
+
+            function showQuiz() {
+                loginScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                loadProgress();
+                displayQuestion();
+            }
+
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CORRECT_PASSWORD) {
+                    sessionStorage.setItem('webdevQuizAuth', 'true');
+                    isAuthenticated = true;
+                    errorMessage.classList.remove('show');
+                    passwordInput.classList.remove('error');
+                    passwordInput.value = '';
+                    showQuiz();
+                } else {
+                    passwordInput.classList.add('error');
+                    errorMessage.textContent = '❌ Incorrect password! Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 500);
+                }
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            }
+
+            function logout() {
+                sessionStorage.removeItem('webdevQuizAuth');
+                isAuthenticated = false;
+                passwordInput.value = '';
+                errorMessage.classList.remove('show');
+                showLogin();
+            }
+
+            // ==================== 30 WEB DEVELOPMENT QUESTIONS ====================
+            const questions = [
+                // HTML Basics (1-5)
+                {
+                    question: "តើ HTML ជាអ្វី? (What is HTML?)",
+                    options: [
+                        "Hyper Text Markup Language",
+                        "High Tech Modern Language",
+                        "Hyper Transfer Markup Language",
+                        "Home Tool Markup Language"
+                    ],
+                    correct: 0,
+                    explain: "HTML stands for Hyper Text Markup Language. It's the standard markup language for creating web pages."
+                },
+                {
+                    question: "តើ tag មួយណាសម្រាប់ heading ធំជាងគេ? (Which tag is for the largest heading?)",
+                    options: [
+                        "<h6>",
+                        "<heading>",
+                        "<h1>",
+                        "<head>"
+                    ],
+                    correct: 2,
+                    explain: "<h1> defines the most important heading. <h6> defines the least important heading."
+                },
+                {
+                    question: "តើ tag មួយណាសម្រាប់បង្កើតតំណ (link)?",
+                    options: [
+                        "<link>",
+                        "<a>",
+                        "<href>",
+                        "<url>"
+                    ],
+                    correct: 1,
+                    explain: "The <a> tag (anchor) defines a hyperlink. The href attribute specifies the link destination."
+                },
+                {
+                    question: "តើ tag មួយណាសម្រាប់បញ្ចូលរូបភាព?",
+                    options: [
+                        "<image>",
+                        "<img>",
+                        "<pic>",
+                        "<photo>"
+                    ],
+                    correct: 1,
+                    explain: "The <img> tag is used to embed an image in an HTML page. It requires the src attribute."
+                },
+                {
+                    question: "តើអ្វីជា DOM? (What is DOM?)",
+                    options: [
+                        "Document Object Model",
+                        "Data Object Management",
+                        "Digital Output Module",
+                        "Document Orientation Model"
+                    ],
+                    correct: 0,
+                    explain: "DOM (Document Object Model) is a programming interface for HTML documents that represents the page structure."
+                },
+
+                // CSS Basics (6-10)
+                {
+                    question: "តើ CSS ជាអ្វី? (What is CSS?)",
+                    options: [
+                        "Creative Style Sheets",
+                        "Computer Style System",
+                        "Cascading Style Sheets",
+                        "Colorful Style Sheets"
+                    ],
+                    correct: 2,
+                    explain: "CSS stands for Cascading Style Sheets. It describes how HTML elements should be displayed."
+                },
+                {
+                    question: "តើធ្វើដូចម្តេចដើម្បី select element ដោយប្រើ ID?",
+                    options: [
+                        ".element",
+                        "#element",
+                        "element",
+                        "*element"
+                    ],
+                    correct: 1,
+                    explain: "In CSS, # selects by ID (e.g., #header), while . selects by class (e.g., .container)."
+                },
+                {
+                    question: "តើ CSS box model មានអ្វីខ្លះ?",
+                    options: [
+                        "Content only",
+                        "Content, padding, border, margin",
+                        "Padding and margin only",
+                        "Border and content only"
+                    ],
+                    correct: 1,
+                    explain: "The CSS box model consists of: content, padding (inside border), border, and margin (outside border)."
+                },
+                {
+                    question: "តើ property មួយណាសម្រាប់ផ្លាស់ប្តូរពណ៌អក្សរ?",
+                    options: [
+                        "background-color",
+                        "color",
+                        "font-color",
+                        "text-color"
+                    ],
+                    correct: 1,
+                    explain: "The 'color' property sets the text color. 'background-color' sets the background color."
+                },
+                {
+                    question: "តើ flexbox ជាអ្វី?",
+                    options: [
+                        "A layout model for one-dimensional layouts",
+                        "A JavaScript framework",
+                        "A database system",
+                        "A programming language"
+                    ],
+                    correct: 0,
+                    explain: "Flexbox is a CSS layout model that provides a flexible way to arrange items in rows or columns."
+                },
+
+                // JavaScript Basics (11-15)
+                {
+                    question: "តើ JavaScript ប្រើសម្រាប់អ្វី?",
+                    options: [
+                        "Styling web pages",
+                        "Structuring content",
+                        "Adding interactivity to web pages",
+                        "Database management"
+                    ],
+                    correct: 2,
+                    explain: "JavaScript adds interactivity, dynamic behavior, and functionality to web pages."
+                },
+                {
+                    question: "តើធ្វើដូចម្តេចដើម្បីប្រកាសអថេរ (variable) ក្នុង JavaScript?",
+                    options: [
+                        "var, let, const",
+                        "int, float, string",
+                        "variable, v",
+                        "declare"
+                    ],
+                    correct: 0,
+                    explain: "JavaScript uses var (old), let (block-scoped), and const (constant) to declare variables."
+                },
+                {
+                    question: "តើ function ជាអ្វីក្នុង JavaScript?",
+                    options: [
+                        "A block of reusable code",
+                        "A type of variable",
+                        "A CSS selector",
+                        "An HTML element"
+                    ],
+                    correct: 0,
+                    explain: "A function is a reusable block of code designed to perform a particular task."
+                },
+                {
+                    question: "តើ method មួយណាសម្រាប់ជ្រើសរើស element តាម ID?",
+                    options: [
+                        "getElementById()",
+                        "getElementByClass()",
+                        "selectElement()",
+                        "findElement()"
+                    ],
+                    correct: 0,
+                    explain: "document.getElementById() selects an HTML element by its ID attribute."
+                },
+                {
+                    question: "តើ event listener ជាអ្វី?",
+                    options: [
+                        "A function that waits for user actions",
+                        "A CSS property",
+                        "An HTML tag",
+                        "A database query"
+                    ],
+                    correct: 0,
+                    explain: "Event listeners wait for and respond to user actions like clicks, key presses, or mouse movements."
+                },
+
+                // Frontend vs Backend (16-20)
+                {
+                    question: "តើ frontend ជាអ្វី?",
+                    options: [
+                        "What users see and interact with",
+                        "The server-side logic",
+                        "The database",
+                        "The network infrastructure"
+                    ],
+                    correct: 0,
+                    explain: "Frontend (client-side) is everything users see and interact with in their browser."
+                },
+                {
+                    question: "តើ backend ជាអ្វី?",
+                    options: [
+                        "The user interface",
+                        "Server-side operations and data management",
+                        "CSS styles",
+                        "HTML structure"
+                    ],
+                    correct: 1,
+                    explain: "Backend (server-side) handles databases, server logic, APIs, and data processing."
+                },
+                {
+                    question: "តើ API ជាអ្វី?",
+                    options: [
+                        "Application Programming Interface",
+                        "Advanced Programming Integration",
+                        "Application Process Interface",
+                        "Automated Program Installation"
+                    ],
+                    correct: 0,
+                    explain: "API (Application Programming Interface) allows different software applications to communicate."
+                },
+                {
+                    question: "តើអ្វីជាភាពខុសគ្នារវាង frontend និង backend?",
+                    options: [
+                        "Frontend is for users, backend is for servers",
+                        "They are the same",
+                        "Frontend is harder",
+                        "Backend is only for databases"
+                    ],
+                    correct: 0,
+                    explain: "Frontend handles user interface and experience. Backend handles data, security, and server logic."
+                },
+                {
+                    question: "តើ full-stack developer ជាអ្នកដែលចេះអ្វីខ្លះ?",
+                    options: [
+                        "Only frontend",
+                        "Only backend",
+                        "Both frontend and backend",
+                        "Only database"
+                    ],
+                    correct: 2,
+                    explain: "A full-stack developer works with both frontend and backend technologies."
+                },
+
+                // Responsive Design (21-24)
+                {
+                    question: "តើ responsive web design ជាអ្វី?",
+                    options: [
+                        "Websites that work on all devices",
+                        "Fast loading websites",
+                        "Websites with animations",
+                        "Secure websites"
+                    ],
+                    correct: 0,
+                    explain: "Responsive design ensures websites look and function well on all devices (desktop, tablet, mobile)."
+                },
+                {
+                    question: "តើ viewport meta tag ប្រើសម្រាប់អ្វី?",
+                    options: [
+                        "Control layout on mobile devices",
+                        "Add metadata",
+                        "Style the page",
+                        "Add JavaScript"
+                    ],
+                    correct: 0,
+                    explain: "The viewport meta tag controls how a webpage displays on mobile devices."
+                },
+                {
+                    question: "តើ media query ជាអ្វី?",
+                    options: [
+                        "CSS technique for responsive design",
+                        "JavaScript function",
+                        "HTML tag",
+                        "Database query"
+                    ],
+                    correct: 0,
+                    explain: "Media queries apply CSS styles based on device characteristics like screen width."
+                },
+                {
+                    question: "តើអ្វីជា mobile-first approach?",
+                    options: [
+                        "Designing for mobile first, then desktop",
+                        "Only designing for mobile",
+                        "Ignoring mobile users",
+                        "Using mobile apps"
+                    ],
+                    correct: 0,
+                    explain: "Mobile-first approach starts designing for mobile devices, then progressively enhances for larger screens."
+                },
+
+                // Web Performance (25-27)
+                {
+                    question: "តើវិធីណាខ្លះដើម្បីបង្កើនល្បឿនគេហទំព័រ?",
+                    options: [
+                        "Optimize images, minify code, use caching",
+                        "Add more images",
+                        "Use more JavaScript",
+                        "Ignore performance"
+                    ],
+                    correct: 0,
+                    explain: "Web performance optimization includes image optimization, code minification, caching, and CDN usage."
+                },
+                {
+                    question: "តើ CDN ជាអ្វី?",
+                    options: [
+                        "Content Delivery Network",
+                        "Code Development Network",
+                        "Computer Data Node",
+                        "Content Display Navigation"
+                    ],
+                    correct: 0,
+                    explain: "CDN (Content Delivery Network) distributes content across multiple servers globally for faster delivery."
+                },
+                {
+                    question: "តើ caching ជាអ្វី?",
+                    options: [
+                        "Storing frequently used data for faster access",
+                        "Deleting old files",
+                        "Adding new features",
+                        "Securing data"
+                    ],
+                    correct: 0,
+                    explain: "Caching stores copies of files to reduce server load and improve loading speed."
+                },
+
+                // Web Security (28-30)
+                {
+                    question: "តើ HTTPS ជាអ្វី?",
+                    options: [
+                        "Hypertext Transfer Protocol Secure",
+                        "High Transfer Protocol System",
+                        "Hyper Text Program System",
+                        "Home Tool Protocol Secure"
+                    ],
+                    correct: 0,
+                    explain: "HTTPS encrypts communication between browser and server, ensuring secure data transmission."
+                },
+                {
+                    question: "តើ XSS attack ជាអ្វី?",
+                    options: [
+                        "Cross-Site Scripting attack",
+                        "XML Style Sheet attack",
+                        "Extra Secure System",
+                        "Cross-Site Security"
+                    ],
+                    correct: 0,
+                    explain: "XSS (Cross-Site Scripting) injects malicious scripts into web pages viewed by other users."
+                },
+                {
+                    question: "តើវិធីណាខ្លះដើម្បីការពារគេហទំព័រ?",
+                    options: [
+                        "Use HTTPS, validate input, sanitize data",
+                        "Use only HTML",
+                        "Disable JavaScript",
+                        "Ignore security"
+                    ],
+                    correct: 0,
+                    explain: "Web security includes HTTPS, input validation, data sanitization, and regular security updates."
+                }
+            ];
+
+            const STORAGE_KEY = 'webdevQuiz';
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
+            }
+
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function displayQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
+                quizDiv.innerHTML = `
+                    <div class="question-container">
+                        <span class="question-number">សំណួរទី ${currentQuestion + 1} នៃ ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+
+                updateStatusMessage(`📌 សំណួរទី ${currentQuestion + 1}/${questions.length} · ពិន្ទុ: ${score}`);
+            }
+
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 ពូកែណាស់! You're a Web Development Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 ធ្វើបានល្អ! You have solid web development knowledge!";
+                } else if (percentage >= 40) {
+                    message = "📚 បន្តការសិក្សា! You're on the right track!";
+                } else {
+                    message = "🌐 ត្រូវសិក្សាបន្ថែម! Time to brush up on web development basics!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>បញ្ចប់ការប្រឡង!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">ពិន្ទុរបស់អ្នក: ${score} / ${questions.length}</p>
+                    <p>ចម្លើយត្រឹមត្រូវ: ${score}</p>
+                    <p>ចម្លើយខុស: ${questions.length - score}</p>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">ធ្វើតេស្តម្តងទៀត</button>
+                `;
+
+                saveProgress();
+            }
+
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return;
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null;
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected && i !== correct) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                
+                if (selected === correct) {
+                    feedback.innerHTML = `✅ <strong>ត្រឹមត្រូវ!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
+                    score++;
+                } else {
+                    feedback.innerHTML = `❌ <strong>មិនត្រឹមត្រូវ.</strong><br>ចម្លើយត្រឹមត្រូវ: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
+                }
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();
+                    updateProgressBar();
+                    displayQuestion();
+                }, 3500);
+            };
+
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+            window.checkPassword = checkPassword;
+            window.handleKeyPress = handleKeyPress;
+            window.logout = logout;
+
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and start from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Networking Quiz - 50 Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .lock-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 3.5em;
+            box-shadow: 0 10px 30px rgba(15, 32, 39, 0.4);
+            animation: pulse 2s infinite;
+            border: 4px solid #00b4d8;
+        }
+
+        .login-screen h2 {
+            color: #0f2027;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .login-screen p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .password-input-group input {
+            width: 100%;
+            padding: 18px 25px;
+            font-size: 1.2em;
+            border: 3px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .password-input-group input:focus {
+            border-color: #0f2027;
+            box-shadow: 0 0 20px rgba(15, 32, 39, 0.3);
+        }
+
+        .password-input-group input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(15, 32, 39, 0.4);
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 20px;
+            font-weight: 600;
+            min-height: 30px;
+            font-size: 1.1em;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .hint-text {
+            color: #6c757d;
+            margin-top: 25px;
+            font-size: 1em;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #00b4d8;
+        }
+
+        /* Quiz Screen Styles */
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quiz-header h1 {
+            color: #0f2027;
+            font-size: 2.2em;
+            margin: 0;
+        }
+
+        .logout-btn {
+            padding: 10px 25px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: #e8f0fe;
+            padding: 15px 20px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            border: 2px solid #0f2027;
+        }
+
+        .status-bar button {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-bar button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0f2027, #2c5364);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid #e0e0e0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #0f2027;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1em;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #0f2027;
+            transform: translateX(10px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background: #f8f9fa;
+            border-left: 5px solid #0f2027;
+        }
+
+        .feedback.correct-feedback {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+
+        .feedback.incorrect-feedback {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        #result {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f2027, #2c5364);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        #result h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0f2027;
+            border: 5px solid #ffc107;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #0f2027;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2c5364;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(15, 32, 39, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <div class="lock-icon">🌐</div>
+            <h2>Networking Quiz</h2>
+            <p>Enter the password to access the 50-question Networking Quiz</p>
+            
+            <div class="password-input-group">
+                <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
+                <button class="login-btn" onclick="checkPassword()">Access Quiz</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div class="hint-text">
+                    <strong>💡 Hint:</strong> The password is "network2024" (try it!)
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-screen">
+            <div class="quiz-header">
+                <h1>🌐 Networking Quiz (50 Questions)</h1>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+            <p class="subtitle">Test your knowledge of computer networking fundamentals</p>
+            
+            <div class="status-bar" id="storageStatus">
+                <span id="progressMessage">Loading your progress...</span>
+                <button id="clearStorageBtn">🗑️ Clear Save</button>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+
+            <div id="quiz"></div>
+            <div id="result" style="display: none;"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="restartQuiz()">↻ Restart Quiz</button>
+                <button class="btn btn-danger" onclick="hardReset()">⟲ Full Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ==================== PASSWORD AUTHENTICATION ====================
+            const CORRECT_PASSWORD = "network2024";
+            let isAuthenticated = sessionStorage.getItem('networkingQuizAuth') === 'true';
+
+            const loginScreen = document.getElementById('loginScreen');
+            const quizScreen = document.getElementById('quizScreen');
+            const passwordInput = document.getElementById('passwordInput');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (isAuthenticated) {
+                showQuiz();
+            } else {
+                showLogin();
+            }
+
+            function showLogin() {
+                loginScreen.style.display = 'block';
+                quizScreen.style.display = 'none';
+            }
+
+            function showQuiz() {
+                loginScreen.style.display = 'none';
+                quizScreen.style.display = 'block';
+                loadProgress();
+                displayQuestion();
+            }
+
+            function checkPassword() {
+                const enteredPassword = passwordInput.value;
+                
+                if (enteredPassword === CORRECT_PASSWORD) {
+                    sessionStorage.setItem('networkingQuizAuth', 'true');
+                    isAuthenticated = true;
+                    errorMessage.classList.remove('show');
+                    passwordInput.classList.remove('error');
+                    passwordInput.value = '';
+                    showQuiz();
+                } else {
+                    passwordInput.classList.add('error');
+                    errorMessage.textContent = '❌ Incorrect password! Please try again.';
+                    errorMessage.classList.add('show');
+                    passwordInput.value = '';
+                    
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 500);
+                }
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === 'Enter') {
+                    checkPassword();
+                }
+            }
+
+            function logout() {
+                sessionStorage.removeItem('networkingQuizAuth');
+                isAuthenticated = false;
+                passwordInput.value = '';
+                errorMessage.classList.remove('show');
+                showLogin();
+            }
+
+            // ==================== 50 NETWORKING QUESTIONS ====================
+            const questions = [
+                // OSI Model (1-5)
+                {
+                    question: "What does OSI stand for in networking?",
+                    options: [
+                        "Open System Interconnection",
+                        "Operating System Interface",
+                        "Open Source Internet",
+                        "Online System Integration"
+                    ],
+                    correct: 0,
+                    explain: "OSI stands for Open Systems Interconnection, a conceptual model that standardizes communication functions in networking."
+                },
+                {
+                    question: "How many layers are in the OSI model?",
+                    options: [
+                        "5",
+                        "6",
+                        "7",
+                        "8"
+                    ],
+                    correct: 2,
+                    explain: "The OSI model has 7 layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application."
+                },
+                {
+                    question: "Which OSI layer is responsible for routing?",
+                    options: [
+                        "Physical Layer",
+                        "Data Link Layer",
+                        "Network Layer",
+                        "Transport Layer"
+                    ],
+                    correct: 2,
+                    explain: "The Network Layer (Layer 3) handles routing, logical addressing, and packet forwarding."
+                },
+                {
+                    question: "Which layer of the OSI model deals with MAC addresses?",
+                    options: [
+                        "Physical Layer",
+                        "Data Link Layer",
+                        "Network Layer",
+                        "Transport Layer"
+                    ],
+                    correct: 1,
+                    explain: "The Data Link Layer (Layer 2) handles MAC addresses, framing, and error detection."
+                },
+                {
+                    question: "Which OSI layer provides end-to-end communication and error recovery?",
+                    options: [
+                        "Network Layer",
+                        "Transport Layer",
+                        "Session Layer",
+                        "Presentation Layer"
+                    ],
+                    correct: 1,
+                    explain: "The Transport Layer (Layer 4) ensures complete data transfer with error recovery and flow control."
+                },
+
+                // TCP/IP Model (6-10)
+                {
+                    question: "How many layers are in the TCP/IP model?",
+                    options: [
+                        "4",
+                        "5",
+                        "6",
+                        "7"
+                    ],
+                    correct: 0,
+                    explain: "The TCP/IP model has 4 layers: Network Interface, Internet, Transport, and Application."
+                },
+                {
+                    question: "Which protocol is responsible for reliable data delivery in TCP/IP?",
+                    options: [
+                        "IP",
+                        "TCP",
+                        "UDP",
+                        "HTTP"
+                    ],
+                    correct: 1,
+                    explain: "TCP (Transmission Control Protocol) provides reliable, connection-oriented data delivery."
+                },
+                {
+                    question: "What is the main difference between TCP and UDP?",
+                    options: [
+                        "TCP is faster, UDP is slower",
+                        "TCP is connection-oriented, UDP is connectionless",
+                        "TCP uses less bandwidth",
+                        "UDP is more reliable"
+                    ],
+                    correct: 1,
+                    explain: "TCP is connection-oriented with guaranteed delivery, while UDP is connectionless and faster but unreliable."
+                },
+                {
+                    question: "Which protocol is used for automatically assigning IP addresses?",
+                    options: [
+                        "DNS",
+                        "HTTP",
+                        "DHCP",
+                        "FTP"
+                    ],
+                    correct: 2,
+                    explain: "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on a network."
+                },
+                {
+                    question: "What is the purpose of ARP?",
+                    options: [
+                        "Assign IP addresses",
+                        "Resolve IP addresses to MAC addresses",
+                        "Route packets",
+                        "Encrypt data"
+                    ],
+                    correct: 1,
+                    explain: "ARP (Address Resolution Protocol) maps IP addresses to MAC addresses on a local network."
+                },
+
+                // IP Addressing (11-15)
+                {
+                    question: "How many bits are in an IPv4 address?",
+                    options: [
+                        "16 bits",
+                        "32 bits",
+                        "64 bits",
+                        "128 bits"
+                    ],
+                    correct: 1,
+                    explain: "IPv4 addresses are 32 bits long, typically written as four decimal numbers (0-255) separated by dots."
+                },
+                {
+                    question: "How many bits are in an IPv6 address?",
+                    options: [
+                        "32 bits",
+                        "64 bits",
+                        "128 bits",
+                        "256 bits"
+                    ],
+                    correct: 2,
+                    explain: "IPv6 addresses are 128 bits long, written as eight groups of hexadecimal numbers."
+                },
+                {
+                    question: "Which IP address is a loopback address?",
+                    options: [
+                        "192.168.1.1",
+                        "10.0.0.1",
+                        "127.0.0.1",
+                        "172.16.0.1"
+                    ],
+                    correct: 2,
+                    explain: "127.0.0.1 is the loopback address (localhost), used to test network software on the local machine."
+                },
+                {
+                    question: "Which of these is a private IP address range?",
+                    options: [
+                        "8.8.8.8",
+                        "192.168.1.1",
+                        "1.1.1.1",
+                        "4.4.4.4"
+                    ],
+                    correct: 1,
+                    explain: "192.168.0.0/16 is a private IP range. Other private ranges include 10.0.0.0/8 and 172.16.0.0/12."
+                },
+                {
+                    question: "What is subnet mask 255.255.255.0 in CIDR notation?",
+                    options: [
+                        "/16",
+                        "/24",
+                        "/28",
+                        "/32"
+                    ],
+                    correct: 1,
+                    explain: "255.255.255.0 equals /24 CIDR notation, meaning 24 bits for network and 8 bits for hosts."
+                },
+
+                // Network Devices (16-20)
+                {
+                    question: "What device connects different networks and uses IP addresses for routing?",
+                    options: [
+                        "Switch",
+                        "Hub",
+                        "Router",
+                        "Bridge"
+                    ],
+                    correct: 2,
+                    explain: "A router connects different networks and forwards data packets based on IP addresses."
+                },
+                {
+                    question: "Which device operates at Layer 2 of the OSI model?",
+                    options: [
+                        "Router",
+                        "Switch",
+                        "Hub",
+                        "Firewall"
+                    ],
+                    correct: 1,
+                    explain: "A switch operates at Layer 2 (Data Link Layer) and uses MAC addresses to forward frames."
+                },
+                {
+                    question: "What is the difference between a hub and a switch?",
+                    options: [
+                        "Hub is faster than switch",
+                        "Hub broadcasts to all ports, switch sends to specific port",
+                        "Hub uses IP addresses, switch uses MAC addresses",
+                        "They are the same"
+                    ],
+                    correct: 1,
+                    explain: "A hub broadcasts data to all ports, while a switch intelligently forwards data only to the destination port."
+                },
+                {
+                    question: "What device protects a network by filtering traffic based on rules?",
+                    options: [
+                        "Router",
+                        "Switch",
+                        "Firewall",
+                        "Modem"
+                    ],
+                    correct: 2,
+                    explain: "A firewall monitors and controls incoming/outgoing network traffic based on predetermined security rules."
+                },
+                {
+                    question: "What is an access point (AP) used for?",
+                    options: [
+                        "Connecting wired networks",
+                        "Providing wireless network access",
+                        "Routing between networks",
+                        "Filtering network traffic"
+                    ],
+                    correct: 1,
+                    explain: "An access point allows wireless devices to connect to a wired network using Wi-Fi."
+                },
+
+                // Network Topologies (21-25)
+                {
+                    question: "In which topology are all devices connected to a single cable?",
+                    options: [
+                        "Star topology",
+                        "Ring topology",
+                        "Bus topology",
+                        "Mesh topology"
+                    ],
+                    correct: 2,
+                    explain: "In bus topology, all devices are connected to a single cable (backbone) with terminators at both ends."
+                },
+                {
+                    question: "Which topology has all devices connected to a central device?",
+                    options: [
+                        "Bus topology",
+                        "Ring topology",
+                        "Star topology",
+                        "Mesh topology"
+                    ],
+                    correct: 2,
+                    explain: "In star topology, all devices connect to a central hub or switch, making it easy to manage."
+                },
+                {
+                    question: "Which topology provides the most redundancy?",
+                    options: [
+                        "Bus topology",
+                        "Ring topology",
+                        "Star topology",
+                        "Mesh topology"
+                    ],
+                    correct: 3,
+                    explain: "Mesh topology provides multiple paths between devices, offering high redundancy and fault tolerance."
+                },
+                {
+                    question: "In ring topology, how does data travel?",
+                    options: [
+                        "In both directions",
+                        "In one direction around the ring",
+                        "Randomly",
+                        "Only to the central device"
+                    ],
+                    correct: 1,
+                    explain: "In ring topology, data travels in one direction around the ring, passing through each device."
+                },
+                {
+                    question: "Which topology is most common in modern LANs?",
+                    options: [
+                        "Bus topology",
+                        "Ring topology",
+                        "Star topology",
+                        "Mesh topology"
+                    ],
+                    correct: 2,
+                    explain: "Star topology is most common in modern LANs due to its ease of management and fault isolation."
+                },
+
+                // Protocols and Ports (26-30)
+                {
+                    question: "What port does HTTP use by default?",
+                    options: [
+                        "21",
+                        "80",
+                        "443",
+                        "25"
+                    ],
+                    correct: 1,
+                    explain: "HTTP (Hypertext Transfer Protocol) uses port 80 by default for web traffic."
+                },
+                {
+                    question: "What port does HTTPS use?",
+                    options: [
+                        "80",
+                        "443",
+                        "8080",
+                        "8443"
+                    ],
+                    correct: 1,
+                    explain: "HTTPS (HTTP Secure) uses port 443 for encrypted web traffic."
+                },
+                {
+                    question: "Which port is used by FTP for control connections?",
+                    options: [
+                        "20",
+                        "21",
+                        "22",
+                        "23"
+                    ],
+                    correct: 1,
+                    explain: "FTP uses port 21 for control commands and port 20 for data transfer."
+                },
+                {
+                    question: "What port does SSH use?",
+                    options: [
+                        "21",
+                        "22",
+                        "23",
+                        "25"
+                    ],
+                    correct: 1,
+                    explain: "SSH (Secure Shell) uses port 22 for secure remote access."
+                },
+                {
+                    question: "Which port is used by DNS?",
+                    options: [
+                        "53",
+                        "80",
+                        "443",
+                        "25"
+                    ],
+                    correct: 0,
+                    explain: "DNS (Domain Name System) uses port 53 for name resolution queries."
+                },
+
+                // DNS and Domain Names (31-35)
+                {
+                    question: "What is the main purpose of DNS?",
+                    options: [
+                        "Assign IP addresses",
+                        "Translate domain names to IP addresses",
+                        "Secure network connections",
+                        "Route data packets"
+                    ],
+                    correct: 1,
+                    explain: "DNS (Domain Name System) translates human-readable domain names (like google.com) to IP addresses."
+                },
+                {
+                    question: "What is a DNS A record?",
+                    options: [
+                        "Maps domain to IPv6 address",
+                        "Maps domain to IPv4 address",
+                        "Maps domain to mail server",
+                        "Maps domain to another domain"
+                    ],
+                    correct: 1,
+                    explain: "An A record maps a domain name to an IPv4 address. AAAA records map to IPv6 addresses."
+                },
+                {
+                    question: "What is a DNS MX record used for?",
+                    options: [
+                        "Web servers",
+                        "Mail servers",
+                        "Name servers",
+                        "Backup servers"
+                    ],
+                    correct: 1,
+                    explain: "MX (Mail Exchange) records specify mail servers responsible for accepting email on behalf of a domain."
+                },
+                {
+                    question: "What is a TLD (Top-Level Domain)?",
+                    options: [
+                        "The last part of a domain name (e.g., .com)",
+                        "The first part of a domain name",
+                        "A type of server",
+                        "A network protocol"
+                    ],
+                    correct: 0,
+                    explain: "TLDs are the highest level in DNS hierarchy, such as .com, .org, .net, or country codes like .uk, .jp."
+                },
+                {
+                    question: "What is the root DNS server?",
+                    options: [
+                        "The main server for a domain",
+                        "The top of DNS hierarchy that directs to TLD servers",
+                        "A backup DNS server",
+                        "A local DNS cache"
+                    ],
+                    correct: 1,
+                    explain: "Root DNS servers are the first step in resolving domain names, directing queries to appropriate TLD servers."
+                },
+
+                // Network Commands (36-40)
+                {
+                    question: "What command tests network connectivity by sending ICMP echo requests?",
+                    options: [
+                        "tracert",
+                        "ping",
+                        "ipconfig",
+                        "netstat"
+                    ],
+                    correct: 1,
+                    explain: "Ping sends ICMP echo requests to test connectivity and measure response time to a host."
+                },
+                {
+                    question: "Which command shows the path packets take to a destination?",
+                    options: [
+                        "ping",
+                        "tracert (or traceroute)",
+                        "ipconfig",
+                        "nslookup"
+                    ],
+                    correct: 1,
+                    explain: "Tracert (Windows) or traceroute (Linux) shows each hop along the path to a destination."
+                },
+                {
+                    question: "What command displays IP configuration on Windows?",
+                    options: [
+                        "ifconfig",
+                        "ipconfig",
+                        "netstat",
+                        "ping"
+                    ],
+                    correct: 1,
+                    explain: "ipconfig displays IP address, subnet mask, default gateway, and other network settings on Windows."
+                },
+                {
+                    question: "What command is used to query DNS servers?",
+                    options: [
+                        "ping",
+                        "tracert",
+                        "nslookup",
+                        "netstat"
+                    ],
+                    correct: 2,
+                    explain: "nslookup queries DNS servers to obtain domain name or IP address mapping information."
+                },
+                {
+                    question: "Which command displays network connections, routing tables, and interface statistics?",
+                    options: [
+                        "ipconfig",
+                        "ping",
+                        "netstat",
+                        "tracert"
+                    ],
+                    correct: 2,
+                    explain: "netstat displays active network connections, listening ports, routing tables, and network statistics."
+                },
+
+                // Wireless Networking (41-45)
+                {
+                    question: "What does Wi-Fi stand for?",
+                    options: [
+                        "Wireless Fidelity",
+                        "Wireless Fiber",
+                        "Wide Fiber",
+                        "Wireless Finder"
+                    ],
+                    correct: 0,
+                    explain: "Wi-Fi stands for Wireless Fidelity, though it's now a brand name for wireless networking technology."
+                },
+                {
+                    question: "Which Wi-Fi standard operates on 5GHz and offers faster speeds?",
+                    options: [
+                        "802.11b",
+                        "802.11g",
+                        "802.11n",
+                        "802.11ac"
+                    ],
+                    correct: 3,
+                    explain: "802.11ac operates on 5GHz band and offers faster speeds than previous standards."
+                },
+                {
+                    question: "What is SSID?",
+                    options: [
+                        "Secure System ID",
+                        "Service Set Identifier - the network name",
+                        "Server Security ID",
+                        "Signal Strength Indicator"
+                    ],
+                    correct: 1,
+                    explain: "SSID (Service Set Identifier) is the name of a wireless network that users see when connecting."
+                },
+                {
+                    question: "Which wireless security protocol is most secure?",
+                    options: [
+                        "WEP",
+                        "WPA",
+                        "WPA2",
+                        "WPA3"
+                    ],
+                    correct: 3,
+                    explain: "WPA3 is the latest and most secure wireless security protocol, offering stronger encryption."
+                },
+                {
+                    question: "What is a rogue access point?",
+                    options: [
+                        "An access point with strong signal",
+                        "An unauthorized access point installed on a network",
+                        "A damaged access point",
+                        "A public Wi-Fi hotspot"
+                    ],
+                    correct: 1,
+                    explain: "A rogue access point is an unauthorized wireless AP installed on a secure network, posing security risks."
+                },
+
+                // Network Security (46-50)
+                {
+                    question: "What is a DoS attack?",
+                    options: [
+                        "Data Overload System",
+                        "Denial of Service - overwhelming a system with traffic",
+                        "Digital Offense System",
+                        "Domain Override Service"
+                    ],
+                    correct: 1,
+                    explain: "DoS (Denial of Service) attacks overwhelm a system with traffic, making it unavailable to legitimate users."
+                },
+                {
+                    question: "What is a DDoS attack?",
+                    options: [
+                        "Distributed Denial of Service - attack from multiple sources",
+                        "Direct Data Overload Service",
+                        "Domain Denial of Service",
+                        "Distributed Data Security"
+                    ],
+                    correct: 0,
+                    explain: "DDoS uses multiple compromised systems to launch a coordinated attack against a single target."
+                },
+                {
+                    question: "What is a man-in-the-middle attack?",
+                    options: [
+                        "Attacker secretly relays communication between two parties",
+                        "Attacker destroys network devices",
+                        "Attacker steals physical devices",
+                        "Attacker floods the network"
+                    ],
+                    correct: 0,
+                    explain: "A man-in-the-middle attack intercepts communication between two parties to eavesdrop or alter data."
+                },
+                {
+                    question: "What is a VPN used for?",
+                    options: [
+                        "Increasing internet speed",
+                        "Creating secure, encrypted connections over public networks",
+                        "Blocking all network traffic",
+                        "Monitoring network activity"
+                    ],
+                    correct: 1,
+                    explain: "A VPN (Virtual Private Network) creates an encrypted tunnel for secure communication over public networks."
+                },
+                {
+                    question: "What is network segmentation?",
+                    options: [
+                        "Dividing a network into smaller subnetworks",
+                        "Increasing network speed",
+                        "Adding more devices",
+                        "Removing network cables"
+                    ],
+                    correct: 0,
+                    explain: "Network segmentation divides a network into smaller parts to improve performance and security."
+                }
+            ];
+
+            const STORAGE_KEY = 'networkingQuiz';
+            let currentQuestion = 0;
+            let score = 0;
+            let autoSaveTimer = null;
+
+            function loadProgress() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (typeof data.current === 'number' && data.current >= 0 && data.current <= questions.length &&
+                            typeof data.score === 'number') {
+                            currentQuestion = data.current;
+                            score = data.score;
+                            updateStatusMessage(`📂 Resumed from Q${currentQuestion + 1}/${questions.length} (Score: ${score})`);
+                            updateProgressBar();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('✨ New Session - Progress Auto-Saved');
+                updateProgressBar();
+            }
+
+            function saveProgress() {
+                if (autoSaveTimer) clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    try {
+                        const data = { current: currentQuestion, score };
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                        updateStatusMessage(`💾 Saved at Q${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+                    } catch (e) {}
+                }, 200);
+            }
+
+            function updateStatusMessage(text) {
+                document.getElementById('progressMessage').innerText = text;
+            }
+
+            function updateProgressBar() {
+                const progress = (currentQuestion / questions.length) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }
+
+            function hardReset() {
+                localStorage.removeItem(STORAGE_KEY);
+                currentQuestion = 0;
+                score = 0;
+                updateStatusMessage('♻️ Storage Cleared - Starting Fresh');
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                saveProgress();
+                updateProgressBar();
+                displayQuestion();
+            }
+
+            function displayQuestion() {
+                if (currentQuestion >= questions.length) {
+                    showResults();
+                    return;
+                }
+
+                const q = questions[currentQuestion];
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                
+                quizDiv.style.display = "block";
+                resultDiv.style.display = "none";
+
+                quizDiv.innerHTML = `
+                    <div class="question-container">
+                        <span class="question-number">Question ${currentQuestion + 1} of ${questions.length}</span>
+                        <div class="question-text">${q.question}</div>
+                        <ul class="options">
+                            ${q.options.map((opt, i) => `
+                                <li class="option" onclick="window.checkAnswer(${i}, ${q.correct})">${String.fromCharCode(65 + i)}. ${opt}</li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback" id="feedback"></div>
+                    </div>
+                `;
+
+                updateStatusMessage(`📌 Question ${currentQuestion + 1}/${questions.length} · Score: ${score}`);
+            }
+
+            function showResults() {
+                const quizDiv = document.getElementById("quiz");
+                const resultDiv = document.getElementById("result");
+                const percentage = Math.round((score / questions.length) * 100);
+                
+                quizDiv.style.display = "none";
+                resultDiv.style.display = "block";
+
+                let message = "";
+                if (percentage >= 80) {
+                    message = "🎉 Excellent! You're a Networking Expert!";
+                } else if (percentage >= 60) {
+                    message = "👍 Good job! You have solid networking knowledge!";
+                } else if (percentage >= 40) {
+                    message = "📚 Keep learning! You're on the right track!";
+                } else {
+                    message = "🌐 Time to brush up on networking basics!";
+                }
+
+                resultDiv.innerHTML = `
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-circle">${percentage}%</div>
+                    <p>${message}</p>
+                    <p style="font-size: 1.5em;">Your Score: ${score} / ${questions.length}</p>
+                    <p>Correct Answers: ${score}</p>
+                    <p>Incorrect Answers: ${questions.length - score}</p>
+                    <button class="btn btn-primary" onclick="restartQuiz()" style="margin-top: 20px;">Take Quiz Again</button>
+                `;
+
+                saveProgress();
+            }
+
+            window.checkAnswer = function(selected, correct) {
+                const options = document.querySelectorAll(".option");
+                if (!options.length) return;
+
+                options.forEach((opt, i) => {
+                    opt.onclick = null;
+                    if (i === correct) {
+                        opt.classList.add("correct");
+                    } else if (i === selected && i !== correct) {
+                        opt.classList.add("incorrect");
+                    }
+                });
+
+                const feedback = document.getElementById("feedback");
+                const q = questions[currentQuestion];
+                
+                if (selected === correct) {
+                    feedback.innerHTML = `✅ <strong>Correct!</strong><br>${q.explain}`;
+                    feedback.className = "feedback correct-feedback";
+                    score++;
+                } else {
+                    feedback.innerHTML = `❌ <strong>Incorrect.</strong><br>Correct answer: <strong>${String.fromCharCode(65 + correct)}. ${q.options[correct]}</strong><br>${q.explain}`;
+                    feedback.className = "feedback incorrect-feedback";
+                }
+
+                setTimeout(() => {
+                    currentQuestion++;
+                    saveProgress();
+                    updateProgressBar();
+                    displayQuestion();
+                }, 3500);
+            };
+
+            window.restartQuiz = restartQuiz;
+            window.hardReset = hardReset;
+            window.checkPassword = checkPassword;
+            window.handleKeyPress = handleKeyPress;
+            window.logout = logout;
+
+            document.getElementById('clearStorageBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Clear saved progress and start from question 1?')) {
+                    hardReset();
+                }
+            });
+
+        })();
+    </script>
+</body>
+</html>
